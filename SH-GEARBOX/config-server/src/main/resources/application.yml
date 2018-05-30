@@ -1,0 +1,20 @@
+eureka:
+  client:
+    serviceUrl.defaultZone: @eureka_ip1@,@eureka_ip2@
+    fetchRegistry: true
+  instance:
+    prefer-ip-address: true 
+server:
+  port: 8888
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/luyi1/sagw.git
+          search-paths: /**
+          username: smluyi@163.com
+          password: P@ssw0rd60
+    label: master

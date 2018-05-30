@@ -1,0 +1,10 @@
+.project
+.settings
+.classpath
+bin
+target
+WebContent
+*.class
+*.swp
+*.log
+.idea/

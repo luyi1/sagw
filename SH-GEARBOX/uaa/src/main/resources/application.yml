@@ -1,0 +1,91 @@
+uaa:
+  ribbon:
+    DeploymentContextBasedVipAddresses: uaa
+    NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
+    ReadTimeout: 50000
+    MaxAutoRetries: 2
+hystrix:  
+  command:  
+    default:  
+      execution:  
+        isolation:  
+          thread:  
+            timeoutInMilliseconds: 30000 #缺省为1000     
+ribbon:
+  eureka:
+    enabled: false
+users:
+  ribbon:
+    listOfServers: localhost:8889
+eureka:
+  client:
+    serviceUrl.defaultZone: @eureka_ip1@,@eureka_ip2@
+    fetchRegistry: true
+  instance:
+    prefer-ip-address: true 
+zuul:
+  routes:
+    api-a:
+      path: /spoapi/**
+      serviceId: spoapp
+  sensitive-headers: 
+server:
+  port: 8082
+
+spring:
+  aop:
+    auto: true
+  datasource:
+
+    url: jdbc:postgresql://@postgresql_ip@/sposit25?currentSchema=public&useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE
+    username: postgres
+    password: spo2
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      max-wait: 30000
+      initial-size: 5
+      min-idle: 1
+      max-active: 50
+      max-idle:  45
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+    vhost: /dev
+  devtools:
+    restart:
+      enabled: false
+  jmx:
+    enabled: false
+  application:
+       name: uaa  
+  sleuth:
+    sampler:
+      percentage: 1.0
+  zipkin:
+    base-url: http://localhost:9411   
+mapper:
+  not-empty: false
+  identity: POSTGRES
+
+application:
+  version: 1.0
+  cors: false
+#server:
+#  port: 8080
+security:
+  user:
+    password: user  # 直接登录时的密码
+  ignored: /
+  sessions: never   # session策略
+  oauth2:
+    sso:
+      loginPath: /login   # 登录路径
+    client:
+      clientId: 5cd01c06d4243b49d91f
+      clientSecret: 42ba63175dc7d3e0b94a45def3a189b0f0dbec93
+      accessTokenUri: https://github.com/login/oauth/access_token
+      userAuthorizationUri: https://github.com/login/oauth/authorize
+    resource:
+      userInfoUri: https://api.github.com/user
+      preferTokenInfo: false
