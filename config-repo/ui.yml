@@ -29,15 +29,6 @@ ribbon:
 users:
   ribbon:
     listOfServers: localhost:8889
-eureka:
-  client:
-    serviceUrl.defaultZone: @eureka_ip1@,@eureka_ip2@
-    fetchRegistry: true
-  instance:
-    prefer-ip-address: true 
-spring:
-  application:
-    name: ui
 zuul:
   routes:
     api-a:
