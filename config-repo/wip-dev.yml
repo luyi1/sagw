@@ -38,9 +38,3 @@ spring:
          timeout: 0
     application:
       name: wip
-eureka:
-  client:
-    serviceUrl.defaultZone: @eureka_ip1@,@eureka_ip2@
-    fetchRegistry: true
-  instance:
-    prefer-ip-address: true 
