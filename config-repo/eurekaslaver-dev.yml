@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: eureka-slaver
+    profiles: peer2
+server:
+  port: 8762
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true 
+    hostname: peer2
+  server:
+    evictionIntervalTimerInMs: 5000       
+    renewalPercentThreshold: 0.3

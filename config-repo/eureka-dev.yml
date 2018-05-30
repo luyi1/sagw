@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: eureka-server
+    profiles: peer1
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true 
+    hostname: peer1
+  server:
+    evictionIntervalTimerInMs: 5000       
+    renewalPercentThreshold: 0.3
