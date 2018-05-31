@@ -1,40 +1,4 @@
-zuul:
-  routes:
-    api-a.path: /spoapi/**
-    api-a.serviceId: spoapp
-ribbon:
-  eureka:
-    enabled: true
-#spoapp:
-#  ribbon:
-#    DeploymentContextBasedVipAddresses: spoapp
-#    NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
-#    ReadTimeout: 50000
-#    MaxAutoRetries: 2
-hystrix:  
-  command:  
-    default:  
-      execution:  
-        isolation:  
-          thread:  
-            timeoutInMilliseconds: 30000 #缺省为1000   
-spring:
-  application:
-    name: eureka-server
-    profiles: peer1
-server:
-  port: 8761
 eureka:
   client:
-    register-with-eureka: false
-    fetch-registry: true
     serviceUrl:
       defaultZone: @eureka_ip2@
-  instance:
-    prefer-ip-address: true 
-    hostname: peer1
-  server:
-    evictionIntervalTimerInMs: 5000      
-    renewalPercentThreshold: 0.3
-#    enable-self-preservation: false
-#    eviction-interval-timer-in-ms: 4000

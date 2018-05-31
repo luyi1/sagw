@@ -1,14 +1,3 @@
-spring:
-  application:
-    name: wip
-  profiles:
-    active: dev
-  cloud:
-    config:
-      profile: dev
-      config: 
-        label: master
-        uri: http://localhost:8888/
 eureka:
   client:
     serviceUrl.defaultZone: @eureka_ip1@,@eureka_ip2@

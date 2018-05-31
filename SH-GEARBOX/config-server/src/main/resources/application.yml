@@ -14,7 +14,11 @@ spring:
       server:
         git:
           uri: https://github.com/luyi1/sagw.git
-          search-paths: /**
+          search-paths: config-repo
           username: smluyi@163.com
           password: P@ssw0rd60
     label: master
+#uri: git@github.build.ge.com:GED-PS/SPO.git
+#          search-paths: config-repo
+#          username: yi.lu12@ge.com
+#          password: P@ssw0rd30luyi

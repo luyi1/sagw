@@ -7,10 +7,11 @@
     <artifactId>uaa</artifactId>	
     <version>0.0.1-SNAPSHOT</version>
 
-		<parent>
-		<groupId>com.ge.digital</groupId>
-		<artifactId>gearbox</artifactId>
-		<version>${project.version}</version>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.13.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ge.digital.gearbox</groupId>
 
@@ -21,8 +22,18 @@
     </properties>
 	<name>uaa</name>
 	<description>AuthService framework</description>
+	<dependencyManagement>
 
-
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-dependencies</artifactId>
+			<version>Edgware.SR3</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+	</dependencies>
+</dependencyManagement>
 	<dependencies>
 	 <dependency>
           <groupId>org.springframework.cloud</groupId>

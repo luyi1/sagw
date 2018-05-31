@@ -5,10 +5,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
 
+/** 
+ * @ClassName: WipApplication 
+ * @Description: TODO
+ * @author: lu yi
+ * @date: May 31, 2018 1:11:00 PM  
+ */
 @SpringBootApplication
 @EnableEurekaClient
 public class WipApplication {

@@ -18,11 +18,11 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<modules>	
+	<modules>
 		<module>apigateway</module>
 		<module>eurekaserver</module>
 		<module>eurekaserverSlaver</module>
-		<module>uaa</module>
+		<module>config-server</module>
 		<module>wip</module>
 	</modules>
 
@@ -49,31 +49,31 @@
 	</properties>
 
 	<dependencyManagement>
-	
+
 		<dependencies>
-		 <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies</artifactId>
-            <version>Edgware.SR3</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
 			<dependency>
-				<groupId>com.ge.digital.gearbox</groupId>
-				<artifactId>uaa</artifactId>
-				<version>${project.version}</version>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Edgware.SR3</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
-	<dependency>
+			<!-- <dependency> -->
+			<!-- <groupId>com.ge.digital.gearbox</groupId> -->
+			<!-- <artifactId>uaa</artifactId> -->
+			<!-- <version>${project.version}</version> -->
+			<!-- </dependency> -->
+			<dependency>
 				<groupId>com.ge.digital.gearbox</groupId>
 				<artifactId>apigateway</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-				<dependency>
+			<dependency>
 				<groupId>com.ge.digital.gearbox</groupId>
 				<artifactId>eurekaserver</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-				<dependency>
+			<dependency>
 				<groupId>com.ge.digital.gearbox</groupId>
 				<artifactId>eurekaserverslaver</artifactId>
 				<version>${project.version}</version>
@@ -83,13 +83,17 @@
 				<artifactId>wip</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-<!-- 			<dependency> -->
-<!-- 				<groupId>com.ge.digital.spo</groupId> -->
-<!-- 				<artifactId>common</artifactId> -->
-<!-- 				<version>${project.version}</version> -->
-<!-- 			</dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>com.ge.digital.spo</groupId> -->
+			<!-- <artifactId>common</artifactId> -->
+			<!-- <version>${project.version}</version> -->
+			<!-- </dependency> -->
+			<dependency>
+				<groupId>com.ge.digital.gearbox</groupId>
+				<artifactId>config-server</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
-			
 
 			<dependency>
 				<groupId>io.springfox</groupId>
@@ -105,32 +109,32 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            	<plugin>
+		<plugins>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			 <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.13</version>
-                <configuration>
-                <skipDockerBuild>true</skipDockerBuild>
-                    <imageName>${project.artifactId}:${project.version}</imageName>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<skipDockerBuild>true</skipDockerBuild>
+					<imageName>${project.artifactId}:${project.version}</imageName>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

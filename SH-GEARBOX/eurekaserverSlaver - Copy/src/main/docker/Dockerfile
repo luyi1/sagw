@@ -1,6 +1,6 @@
 FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
-ADD config-server-0.0.1-SNAPSHOT.jar app.jar
+ADD eurekaserverslaver-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 
-EXPOSE 8888
+EXPOSE 8762

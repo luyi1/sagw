@@ -9,7 +9,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>apigateway</name>
+	<name>config-server</name>
 	<description>Demo cnc project for Spring Boot</description>
 
 			<parent>
