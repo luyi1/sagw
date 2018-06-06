@@ -3,31 +3,42 @@ package com.ge.digital.gearbox.controller;
 import java.security.Principal;
 import java.util.List;
 
-import com.ge.digital.gearbox.entity.Users;
-import com.ge.digital.gearbox.service.UserService;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
+import com.ge.digital.gearbox.entity.Users;
+import com.ge.digital.gearbox.service.UserService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @Controller
 @CrossOrigin
 
 public class HelloWorldRestController {
-  
+	private static final Logger logger  =  LoggerFactory.getLogger(HelloWorldRestController.class);
     @Autowired
     UserService userService;  //Service which will do all data retrieval/manipulation work
+    @Autowired
+    RestTemplate restTemplate;
     @RequestMapping(value = "/user/me", method = RequestMethod.GET)
     @ResponseBody
     public Principal user(Principal principal) {
         System.out.println(principal);
         return principal;
+    }
+    @HystrixCommand(fallbackMethod = "error")
+    @RequestMapping(value = "/testHystrix/", method = RequestMethod.GET)
+    @ResponseBody
+    public Object testHystrix() {
+    	 ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://wip/user2/me12/", String.class, "Surgery");
+    	    return responseEntity.getBody();
     }
     @RequestMapping(value = "/user2/me2/", method = RequestMethod.GET)
     @ResponseBody
@@ -38,6 +49,9 @@ public class HelloWorldRestController {
          }
          return users;
     } 
+    public String error() {
+        return "error";
+    }
     //-------------------Retrieve All Users--------------------------------------------------------
 
 //    @PreAuthorize("hasRole('admin')")
@@ -55,6 +69,7 @@ public class HelloWorldRestController {
     @RequestMapping(value = "/randomNum/", method = RequestMethod.GET)
     @ResponseBody
     public Double randomNum() {
+    	logger.error("test");
         return Math.random()*100;
     }
     //-------------------Retrieve Single User--------------------------------------------------------
