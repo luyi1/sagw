@@ -27,7 +27,7 @@ spring:
            format_sql: true
     redis: 
       database: 1
-      host: 192.168.0.12
+      host: 10.0.0.8
       port: 6379
       password: 
       pool:
@@ -35,6 +35,6 @@ spring:
          max-wait: -1
          max-idle: 8
          min-idle: 0
-         timeout: 0
+         timeout: 5000
     application:
       name: wip
