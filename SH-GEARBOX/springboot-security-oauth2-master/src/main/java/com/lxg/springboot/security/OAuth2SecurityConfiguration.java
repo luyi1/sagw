@@ -22,13 +22,6 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 import com.alibaba.druid.pool.DruidDataSource;
 import com.lxg.springboot.config.MyUserDetailsService;
 
-/**
- * security配置
- * 
- * @author lxg
- *
- * 2017年2月17日上午11:13:55
- */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

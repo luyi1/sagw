@@ -1,6 +1,6 @@
 eureka:
   client:
-    serviceUrl.defaultZone: http://10.0.75.1:8761/,@eureka_ip2@
+    serviceUrl.defaultZone: http://10.1.5.193:8761/eureka/,http://10.1.5.193:8762/eureka/
     fetchRegistry: true
   instance:
-    prefer-ip-address: true 
+    prefer-ip-address: true

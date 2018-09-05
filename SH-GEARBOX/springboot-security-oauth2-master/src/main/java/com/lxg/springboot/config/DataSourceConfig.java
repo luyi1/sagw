@@ -9,9 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.alibaba.druid.pool.DruidDataSource;
 
 
-/**
- * Created by simon on 2017/2/20.
- */
 @Configuration
 public class DataSourceConfig {
     @Autowired

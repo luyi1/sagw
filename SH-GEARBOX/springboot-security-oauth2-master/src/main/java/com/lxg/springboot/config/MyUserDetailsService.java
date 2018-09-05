@@ -16,10 +16,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/**
- * Created by lxg
- * on 2017/2/20.
- */
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired

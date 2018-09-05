@@ -1,0 +1,71 @@
+debug: true
+spring:
+  thymeleaf:
+    prefix: classpath:/thymeleaf/
+    suffix: .html
+    encoding: utf-8
+    mode: HTML5
+    content-type: text/html
+    cache: false
+  datasource:
+    url: jdbc:sqlserver://10.1.5.190:1433;DatabaseName=soadb
+    username: sa
+    password: Qazx1234
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: SELECT 1 FROM DUAL
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    open-in-view: true
+    properties:
+      hibernate:
+        ddl-auto: update
+        default_schema: PR_Schedule
+  redis:
+    database: 0
+    host: 10.1.5.193
+    port: 6379
+    password: null
+    timeout: 0
+    pool:
+      max-active: -1
+      max-wait: -1
+      max-idle: -1
+      min-idle: -1
+  application:
+    name: schedule
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirms: true
+    virtual-host: /
+custom:
+  rest:
+    connection:
+      connection-request-timeout: 30000
+      connect-timeout: 30000
+      read-timeout: 30000
+  plantsimulation:
+    database:
+      timeout: 60000
+    url: http://127.0.0.1:8081/invoke
+    serverkey: schedule-ps
+  wip:
+    url:
+      fetchnewworkstationstatus: http://127.0.0.1/fetchWorkstationsStatus
+      fetchmaterielbypartnumbers: http://127.0.0.1/fetchMaterielByPartNumbers
+      fetchdeviceandline: http://127.0.0.1/fetchDeviceAndLine
+      submit: http://127.0.0.1/takeOrder
+  mq:
+    masterdatacheck: schedule.request.masterdatacheck
+    deviceandlinecheck: schedule.request.deviceandlinecheck
+    confirm: schedule.request.confirm
+  redis: globalexpiretime:86400

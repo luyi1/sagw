@@ -4,11 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 import static javax.persistence.GenerationType.IDENTITY;
-
-/**
- * Created by lxg
- * on 2017/2/20.
- */
 @Entity
 @Table(name = "user_role")
 public class UserRole implements Serializable{

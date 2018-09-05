@@ -13,10 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-/**
- * Created by lxg
- * on 2017/2/20.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 //@SpringApplicationConfiguration(Application.class)
 public class ApplicationTests {

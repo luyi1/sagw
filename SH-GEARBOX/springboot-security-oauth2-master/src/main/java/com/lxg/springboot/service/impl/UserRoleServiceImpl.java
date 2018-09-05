@@ -8,10 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by lxg
- * on 2017/2/21.
- */
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
 

@@ -19,11 +19,14 @@
 	</parent>
 
 	<modules>
+<!-- 		<module>common</module> -->
 		<module>apigateway</module>
 		<module>eurekaserver</module>
 		<module>eurekaserverSlaver</module>
 		<module>config-server</module>
-		<module>wip</module>
+		<module>integration</module>
+		<module>schedule</module>
+		<module>schedule-ps</module>
 	</modules>
 
 	<properties>
@@ -43,9 +46,9 @@
 		<hamcrest.version>1.3</hamcrest.version>
 		<shiro.version>1.3.2</shiro.version>
 		<postgresql.version>42.1.1</postgresql.version>
-		<eureka_ip1>http://10.0.75.1:8761/eureka/</eureka_ip1>
-		<eureka_ip2>http://10.0.75.1:8762/eureka/</eureka_ip2>
-		<postgresql_ip>10.0.75.1:5432</postgresql_ip>
+		<eureka_ip1>http://10.1.5.193:8761/eureka/</eureka_ip1>
+		<eureka_ip2>http://10.1.5.193:8762/eureka/</eureka_ip2>
+		<postgresql_ip>10.0.0.8:5432</postgresql_ip>
 	</properties>
 
 	<dependencyManagement>
@@ -83,17 +86,17 @@
 				<artifactId>wip</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<!-- <dependency> -->
-			<!-- <groupId>com.ge.digital.spo</groupId> -->
-			<!-- <artifactId>common</artifactId> -->
-			<!-- <version>${project.version}</version> -->
-			<!-- </dependency> -->
+			
+			<dependency>
+				<groupId>com.ge.digital.gearbox</groupId>
+				<artifactId>schedule</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.ge.digital.gearbox</groupId>
 				<artifactId>config-server</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 
 			<dependency>
 				<groupId>io.springfox</groupId>
@@ -110,14 +113,10 @@
 	</dependencyManagement>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>org.springframework.boot</groupId> -->
+			<!-- <artifactId>spring-boot-maven-plugin</artifactId> -->
+			<!-- </plugin> -->
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>

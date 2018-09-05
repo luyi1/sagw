@@ -40,8 +40,5 @@ zuul:
     api-c: 
       path: /wip/**
       serviceId: wip
-    api-c: 
-      path: /quality/**
-      serviceId: quality
 server:
   port: 8085

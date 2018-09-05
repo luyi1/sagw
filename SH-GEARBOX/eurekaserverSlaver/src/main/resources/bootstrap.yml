@@ -5,5 +5,5 @@ spring:
     config:
       profile: dev
       label: dev
-      uri: http://10.0.75.1:8888/
+      uri: http://localhist:8887/
       

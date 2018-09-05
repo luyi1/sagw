@@ -7,10 +7,6 @@ import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * Created by lxg
- * on 2017/2/20.
- */
 @Entity
 @Table(name = "users")
 public class Users implements Serializable {
