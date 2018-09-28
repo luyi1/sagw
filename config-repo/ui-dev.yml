@@ -32,8 +32,8 @@ users:
 zuul:
   routes:
     api-a:
-      path: /spoapi/**
-      serviceId: spoapp
+      path: /quality/**
+      serviceId: quality
     api-b:
       path: /schedule/**
       serviceId: schedule
