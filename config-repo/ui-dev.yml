@@ -35,8 +35,8 @@ zuul:
       path: /spoapi/**
       serviceId: spoapp
     api-b:
-      path: /uaaapi/**
-      serviceId: uaa
+      path: /schedule/**
+      serviceId: schedule
     api-c: 
       path: /wip/**
       serviceId: wip
