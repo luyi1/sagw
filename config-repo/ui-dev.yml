@@ -35,12 +35,18 @@ zuul:
     api-a:
       path: /quality/**
       serviceId: quality
+      sensitive-headers:
+      custom-sensitive-headers: true
     api-b:
       path: /schedule/**
       serviceId: schedule
+      sensitive-headers:
+      custom-sensitive-headers: true
     api-c: 
       path: /wip/**
       serviceId: wip
+      sensitive-headers:
+      custom-sensitive-headers: true
     
 server:
   port: 8085
