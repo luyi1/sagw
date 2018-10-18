@@ -30,15 +30,17 @@ users:
   ribbon:
     listOfServers: localhost:8889
 zuul:
+  sensitive-headers: 
   routes:
     api-a:
-      path: /spoapi/**
-      serviceId: spoapp
+      path: /quality/**
+      serviceId: quality
     api-b:
-      path: /uaaapi/**
-      serviceId: uaa
+      path: /schedule/**
+      serviceId: schedule
     api-c: 
       path: /wip/**
       serviceId: wip
+    
 server:
   port: 8085

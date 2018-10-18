@@ -30,6 +30,7 @@ users:
   ribbon:
     listOfServers: localhost:8889
 zuul:
+  sensitive-headers: 
   routes:
     api-a:
       path: /quality/**
@@ -40,5 +41,6 @@ zuul:
     api-c: 
       path: /wip/**
       serviceId: wip
+    
 server:
   port: 8085
