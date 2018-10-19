@@ -30,7 +30,7 @@ users:
   ribbon:
     listOfServers: localhost:8889
 zuul:
-  sensitive-headers: 
+  sensitive-headers:
   routes:
     api-a:
       path: /quality/**
