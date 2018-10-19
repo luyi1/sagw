@@ -30,23 +30,15 @@ users:
   ribbon:
     listOfServers: localhost:8889
 zuul:
-  sensitive-headers:
   routes:
     api-a:
       path: /quality/**
       serviceId: quality
-      sensitive-headers:
-      custom-sensitive-headers: true
     api-b:
       path: /schedule/**
       serviceId: schedule
-      sensitive-headers:
-      custom-sensitive-headers: true
     api-c: 
       path: /wip/**
-      serviceId: wip
-      sensitive-headers:
-      custom-sensitive-headers: true
-    
+      serviceId: wip    
 server:
   port: 8085
