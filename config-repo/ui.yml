@@ -40,5 +40,14 @@ zuul:
     api-c: 
       path: /wip/**
       serviceId: wip    
+    api-d:
+      path: /integration/**
+      serviceId: integration
+    api-e:
+      path: /schedule-ps/**
+      serviceId: schedule-ps
+    api-f:
+      path: /dt/**
+      serviceId: dt
 server:
   port: 8085
