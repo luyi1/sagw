@@ -16,6 +16,46 @@ public class ScheduleTaskPsIn extends ModelBase {
 	Date finishDate;
 	String scheduleOrderNo;
 	Integer priorityLevel;
+	String heatingOutCode;
+	Integer quantityPerCharge;
+	String taskStatus;
+	String reworkBatch;
+	
+	@Column(name = "reworkbatch")
+	public String getReworkBatch() {
+		return reworkBatch;
+	}
+
+	public void setReworkBatch(String reworkBatch) {
+		this.reworkBatch = reworkBatch;
+	}
+
+	@Column(name = "heatingoutcode")
+	public String getHeatingOutCode() {
+		return heatingOutCode;
+	}
+
+	public void setHeatingOutCode(String heatingOutCode) {
+		this.heatingOutCode = heatingOutCode;
+	}
+
+	@Column(name = "quantitypercharge")
+	public Integer getQuantityPerCharge() {
+		return quantityPerCharge;
+	}
+
+	public void setQuantityPerCharge(Integer quantityPerCharge) {
+		this.quantityPerCharge = quantityPerCharge;
+	}
+
+	@Column(name = "taskstatus")
+	public String getTaskStatus() {
+		return taskStatus;
+	}
+
+	public void setTaskStatus(String taskStatus) {
+		this.taskStatus = taskStatus;
+	}
 
 	@Column(name = "taskno")
 	public String getTaskNo() {

@@ -34,7 +34,6 @@ import com.ge.digital.gearbox.entity.WIPExchange;
 import com.ge.digital.gearbox.entity.WarningErrorEventData;
 import com.ge.digital.gearbox.entity.Wash;
 import com.ge.digital.gearbox.mapper.MongoCcfRepository;
-import com.ge.digital.gearbox.redis.RedisService;
 import com.ge.digital.gearbox.service.DataStoreService;
 
 @Controller
@@ -45,8 +44,6 @@ public class DataStoreController {
 
 	@Autowired
 	RestTemplate restTemplate;
-	@Autowired
-	RedisService redisService;
 	@Autowired
 	RedisTemplate<Object, Object> redisTemplate;
 	@Autowired
@@ -60,6 +57,7 @@ public class DataStoreController {
 	@ResponseBody
 	public Object attachProc(@RequestBody ProductionProc productionProc) {
 		NormalResponse rsp = new NormalResponse();
+		
 		dataStoreService.attchProdProc(productionProc);
 		return rsp;
 	}

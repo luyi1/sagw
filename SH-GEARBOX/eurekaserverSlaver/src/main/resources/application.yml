@@ -3,9 +3,10 @@ eureka:
     hostname: eurekaserverslaver
   client:
     serviceUrl:
-      defaultZone: http://localhost:8886/eureka/
+      defaultZone: http://10.1.5.193:8761/eureka/
     fetchRegistry: false
+    register-with-eureka: false
   server: 
     enableSelfPreservation: false
 server:
-  port: 8887
+  port: 8762

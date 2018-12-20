@@ -21,7 +21,6 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ge.digital.gearbox.common.redis.RedisClient;
 
-@Component
 public class CorsFilter implements Filter {
 
 	@Autowired
@@ -36,16 +35,15 @@ public class CorsFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletResponse response = (HttpServletResponse) res;
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
-		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Headers",
-				"X-Requested-With, Content-Type, X-Codingpedia,Authorization,NetGroupId");
+		HttpServletRequest request = (HttpServletRequest) req;
 		try {
-			HttpServletRequest request = (HttpServletRequest) req;
 			String authorization = request.getHeader("Authorization");
-			if (StringUtils.isNotBlank(authorization)&&!redisClient.exists(authorization)) {
+			// if (StringUtils.isBlank(authorization)) {
+			// response.sendError(HttpServletResponse.SC_FORBIDDEN,
+			// "Authorization not invaild");
+			// return;
+			// }
+			if (StringUtils.isNotBlank(authorization) && !redisClient.exists(authorization)) {
 				DecodedJWT jwt = JWT.decode(authorization);
 				Map<String, Claim> map = jwt.getClaims();
 				Claim username = map.get("username");
@@ -55,8 +53,13 @@ public class CorsFilter implements Filter {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		HttpServletResponse response = (HttpServletResponse) res;
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers",
+				"X-Requested-With, Content-Type, X-Codingpedia,Authorization,NetGroupId");
 		chain.doFilter(req, res);
-
 	}
 
 	@Override

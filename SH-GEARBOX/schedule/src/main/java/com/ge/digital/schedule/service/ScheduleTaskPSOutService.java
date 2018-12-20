@@ -45,11 +45,12 @@ public class ScheduleTaskPSOutService {
 	}
 
 	public Long findCount() {
-		return scheduleTaskPSOutRepository.count();
+		return scheduleTaskPSOutRepository.count2();
 	}
 
 	public void truncate() {
-		scheduleTaskPSOutRepository.truncate();
+//		scheduleTaskPSOutRepository.truncate();
+		scheduleTaskPSOutRepository.deleteAll();
 	}
 
 	public List<ScheduleTaskPSOut> findAll() {

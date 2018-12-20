@@ -8,15 +8,35 @@ import javax.persistence.Table;
 @Table(name = "sh_linebufferstatus")
 public class LineBufferStatus extends ModelBase {
 
-	@Column(name = "line")
+	
 	String line;
-	@Column(name = "bufferno")
+	
 	Integer bufferNo;
-	@Column(name = "partnumber")
+	
 	String partNumber;
-	@Column(name = "opno")
+	
 	String opNo;
+	
+	Integer bufferStationNo;
+	
+	String taskNo;
+	@Column(name = "bufferstationno")
+	public Integer getBufferStationNo() {
+		return bufferStationNo;
+	}
 
+	public void setBufferStationNo(Integer bufferStationNo) {
+		this.bufferStationNo = bufferStationNo;
+	}
+	@Column(name = "taskno")
+	public String getTaskNo() {
+		return taskNo;
+	}
+
+	public void setTaskNo(String taskNo) {
+		this.taskNo = taskNo;
+	}
+	@Column(name = "line")
 	public String getLine() {
 		return line;
 	}
@@ -24,7 +44,7 @@ public class LineBufferStatus extends ModelBase {
 	public void setLine(String line) {
 		this.line = line;
 	}
-
+	@Column(name = "bufferno")
 	public Integer getBufferNo() {
 		return bufferNo;
 	}
@@ -32,7 +52,7 @@ public class LineBufferStatus extends ModelBase {
 	public void setBufferNo(Integer bufferNo) {
 		this.bufferNo = bufferNo;
 	}
-
+	@Column(name = "partnumber")
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -40,7 +60,7 @@ public class LineBufferStatus extends ModelBase {
 	public void setPartNumber(String partNumber) {
 		this.partNumber = partNumber;
 	}
-
+	@Column(name = "opno")
 	public String getOpNo() {
 		return opNo;
 	}

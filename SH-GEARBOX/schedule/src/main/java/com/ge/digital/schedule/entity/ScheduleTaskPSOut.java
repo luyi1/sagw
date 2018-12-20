@@ -34,6 +34,26 @@ public class ScheduleTaskPSOut extends ModelBase {
 	String PartNumber;
 	Integer priorityLevel;
 
+	String heatingOutCode;
+	Integer quantityPerCharge;
+
+	@Column(name = "heatingoutcode")
+	public String getHeatingOutCode() {
+		return heatingOutCode;
+	}
+
+	public void setHeatingOutCode(String heatingOutCode) {
+		this.heatingOutCode = heatingOutCode;
+	}
+
+	@Column(name = "quantitypercharge")
+	public Integer getQuantityPerCharge() {
+		return quantityPerCharge;
+	}
+
+	public void setQuantityPerCharge(Integer quantityPerCharge) {
+		this.quantityPerCharge = quantityPerCharge;
+	}
 	@Column(name = "op10station")
 	public String getOP10Station() {
 		return OP10Station;

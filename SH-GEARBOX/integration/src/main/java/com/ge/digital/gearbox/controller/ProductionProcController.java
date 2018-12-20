@@ -26,7 +26,7 @@ public class ProductionProcController {
 		try {
 			NormalResponse normalResponse = new NormalResponse();
 			ProductionProc proc = productionProcService.findByLoadNumber(loadNumber);
-			normalResponse.setBody(proc);
+			normalResponse.setResData(proc);
 			return normalResponse;
 		} catch (Exception e) {
 			// TODO: handle exception

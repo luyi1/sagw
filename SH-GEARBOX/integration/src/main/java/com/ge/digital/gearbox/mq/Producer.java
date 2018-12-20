@@ -11,8 +11,7 @@ public class Producer {
 	AmqpTemplate amqpTemplate;
 
 	public void archive(long time) {
-		amqpTemplate.convertAndSend("integration.scheduletask.archive",time);
+		amqpTemplate.convertAndSend("integration.scheduletask.archive", time);
 	}
-	
 
 }

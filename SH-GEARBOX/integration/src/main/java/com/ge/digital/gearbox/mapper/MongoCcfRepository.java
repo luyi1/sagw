@@ -19,9 +19,13 @@ public interface MongoCcfRepository extends MongoRepository<Ccf, Long> {
 //    List<Users> findByUsername(String name1);  
 	List<Ccf> findByTimestampBetween(Date start,Date end);
 	@Query(value = "{" +
-            "    euipId:{$regex:?0},\n" +
+            "    equipId:{$regex:?0},\n" +
             "    timestamp:{$gte:?1,$lte:?2},\n" +
             "    line:{$regex:?3}\n" +
             "}")
-	List<Ccf> findCCFByEuipIdAndTimeRange(String equipId, Date start, Date end, String lineNum);
+	List<Ccf> findCCFByEquipIdAndTimeRange(String equipId, Date start, Date end, String lineNum);
+	
+	List<Ccf> findByEquipId(String equipId);
+	
+	List<Ccf> findByEquipIdAndTimestampBetweenAndLine(String equipId, Date start, Date end, String lineNum);
 }

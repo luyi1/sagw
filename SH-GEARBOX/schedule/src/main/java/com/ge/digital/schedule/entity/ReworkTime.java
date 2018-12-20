@@ -7,28 +7,18 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "sh_reworktime")
 public class ReworkTime extends ModelBase {
-
-	@Column(name = "reworkbatch")
 	String reworkBatch;
-	@Column(name = "partnumber")
 	String partNumber;
-	@Column(name = "reworkprocessno")
 	String reworkProcessNo;
-	@Column(name = "reworkline")
 	String reworkLine;
-	@Column(name = "op10")
 	Long OP10;
-	@Column(name = "op20")
 	Long OP20;
-	@Column(name = "op30")
 	Long OP30;
-	@Column(name = "op40")
 	Long OP40;
-	@Column(name = "op50")
 	Long OP50;
-	@Column(name = "op60")
 	Long OP60;
 
+	@Column(name = "reworkbatch")
 	public String getReworkBatch() {
 		return reworkBatch;
 	}
@@ -37,6 +27,7 @@ public class ReworkTime extends ModelBase {
 		this.reworkBatch = reworkBatch;
 	}
 
+	@Column(name = "partnumber")
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -45,6 +36,7 @@ public class ReworkTime extends ModelBase {
 		this.partNumber = partNumber;
 	}
 
+	@Column(name = "reworkprocessno")
 	public String getReworkProcessNo() {
 		return reworkProcessNo;
 	}
@@ -53,6 +45,7 @@ public class ReworkTime extends ModelBase {
 		this.reworkProcessNo = reworkProcessNo;
 	}
 
+	@Column(name = "reworkline")
 	public String getReworkLine() {
 		return reworkLine;
 	}
@@ -61,6 +54,7 @@ public class ReworkTime extends ModelBase {
 		this.reworkLine = reworkLine;
 	}
 
+	@Column(name = "op10")
 	public Long getOP10() {
 		return OP10;
 	}
@@ -69,6 +63,7 @@ public class ReworkTime extends ModelBase {
 		OP10 = oP10;
 	}
 
+	@Column(name = "op20")
 	public Long getOP20() {
 		return OP20;
 	}
@@ -77,6 +72,7 @@ public class ReworkTime extends ModelBase {
 		OP20 = oP20;
 	}
 
+	@Column(name = "op30")
 	public Long getOP30() {
 		return OP30;
 	}
@@ -85,6 +81,7 @@ public class ReworkTime extends ModelBase {
 		OP30 = oP30;
 	}
 
+	@Column(name = "op40")
 	public Long getOP40() {
 		return OP40;
 	}
@@ -93,6 +90,7 @@ public class ReworkTime extends ModelBase {
 		OP40 = oP40;
 	}
 
+	@Column(name = "op50")
 	public Long getOP50() {
 		return OP50;
 	}
@@ -101,6 +99,7 @@ public class ReworkTime extends ModelBase {
 		OP50 = oP50;
 	}
 
+	@Column(name = "op60")
 	public Long getOP60() {
 		return OP60;
 	}

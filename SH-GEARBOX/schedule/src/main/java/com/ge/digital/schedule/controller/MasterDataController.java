@@ -63,11 +63,11 @@ public class MasterDataController {
 			if (isNotDelete(isDelete)) {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2Object(file,
 						LineExcelSupport.class);
-				rsp.setBody(assignInsertUpdateRaw(lineList));
+				rsp.setResData(assignInsertUpdateRaw(lineList));
 			} else {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2ObjectDelete(file,
 						LineExcelSupport.class);
-				rsp.setBody(assignDeleteRaw(lineList));
+				rsp.setResData(assignDeleteRaw(lineList));
 			}
 
 		} catch (RuntimeException | IOException e) {
@@ -83,14 +83,14 @@ public class MasterDataController {
 	@GetMapping("/schedule/findLastUpdateON")
 	public Object findLastUpdateON() {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(uploadingService.findLastUpdateOn());
+		rsp.setResData(uploadingService.findLastUpdateOn());
 		return rsp;
 	}
 
 	@GetMapping("/findAll")
 	public Object findAll(@RequestParam("type") String type) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(uploadingService.findAll(type));
+		rsp.setResData(uploadingService.findAll(type));
 		return rsp;
 	}
 
@@ -104,11 +104,11 @@ public class MasterDataController {
 			if (isNotDelete(isDelete)) {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2Object(file,
 						LineBufferExcelSupport.class);
-				rsp.setBody(assignInsertUpdateRaw(lineList));
+				rsp.setResData(assignInsertUpdateRaw(lineList));
 			} else {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2ObjectDelete(file,
 						LineBufferExcelSupport.class);
-				rsp.setBody(assignDeleteRaw(lineList));
+				rsp.setResData(assignDeleteRaw(lineList));
 			}
 		} catch (RuntimeException | IOException e) {
 			bizError.setResCode(RestResponseCode.UPLOAD_EXCEPTION.getCode());
@@ -130,11 +130,11 @@ public class MasterDataController {
 			if (isNotDelete(isDelete)) {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2Object(file,
 						ProcessLineInfoExcelSupport.class);
-				rsp.setBody(assignInsertUpdateRaw(lineList));
+				rsp.setResData(assignInsertUpdateRaw(lineList));
 			} else {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2ObjectDelete(file,
 						ProcessLineInfoExcelSupport.class);
-				rsp.setBody(assignDeleteRaw(lineList));
+				rsp.setResData(assignDeleteRaw(lineList));
 			}
 		} catch (RuntimeException | IOException e) {
 			bizError.setResCode(RestResponseCode.UPLOAD_EXCEPTION.getCode());
@@ -156,11 +156,11 @@ public class MasterDataController {
 			if (isNotDelete(isDelete)) {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2Object(file,
 						LineProcessTimeExcelSupport.class);
-				rsp.setBody(assignInsertUpdateRaw(lineList));
+				rsp.setResData(assignInsertUpdateRaw(lineList));
 			} else {
 				List<? extends ExcelUploadSupport> lineList = uploadingService.excel2ObjectDelete(file,
 						LineProcessTimeExcelSupport.class);
-				rsp.setBody(assignDeleteRaw(lineList));
+				rsp.setResData(assignDeleteRaw(lineList));
 			}
 		} catch (RuntimeException | IOException e) {
 			bizError.setResCode(RestResponseCode.UPLOAD_EXCEPTION.getCode());
@@ -183,10 +183,10 @@ public class MasterDataController {
 
 			if (isNotDelete(isDelete)) {
 				List<? extends ExcelUploadSupport> objList = uploadingService.excel2Object(file, clazz);
-				rsp.setBody(assignInsertUpdateRaw(objList));
+				rsp.setResData(assignInsertUpdateRaw(objList));
 			} else {
 				List<? extends ExcelUploadSupport> objList = uploadingService.excel2ObjectDelete(file, clazz);
-				rsp.setBody(assignDeleteRaw(objList));
+				rsp.setResData(assignDeleteRaw(objList));
 			}
 		} catch (RuntimeException | IOException e) {
 			bizError.setResCode(RestResponseCode.UPLOAD_EXCEPTION.getCode());
@@ -204,23 +204,8 @@ public class MasterDataController {
 			@RequestParam("batchUploadId") Long batchUploadId) {
 		NormalResponse rsp = new NormalResponse();
 		boolean isDel = isNotDelete(isDelete) ? false : true;
-		if (MasterDataType.Mdline.getValue().equals(type)) {
-			uploadingService.saveMdLine(batchUploadId, isDel);
-		} else if (MasterDataType.ScheduleOrder.getValue().equals(type)) {
-			uploadingService.saveScheduleOrder(batchUploadId, isDel);
-		} else if (MasterDataType.LineBuffer.getValue().equals(type)) {
-			uploadingService.saveLineBuffer(batchUploadId, isDel);
-
-		} else if (MasterDataType.ProcessLineInfo.getValue().equals(type)) {
-			uploadingService.saveProcessLineInfo(batchUploadId, isDel);
-		} else if (MasterDataType.LineProcessTime.getValue().equals(type)) {
-			uploadingService.saveLineProcessTime(batchUploadId, isDel);
-		} else if (MasterDataType.WorkstationStatus.getValue().equals(type)) {
-			uploadingService.saveWorkstationStatus(batchUploadId, isDel);
-
-		}
-
-		rsp.setBody(null);
+		uploadingService.saveObject(batchUploadId,isDel,type);
+		rsp.setResData(null);
 		logger.info("save success.batchuploadId:" + batchUploadId);
 		return rsp;
 	}

@@ -17,7 +17,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.ge.digital.gearbox.common.response.NormalResponse;
-import com.ge.digital.gearbox.redis.RedisService;
+import com.ge.digital.gearbox.mapper.CustomMongoRepository;
+import com.ge.digital.gearbox.mapper.MongoC2H2Repository;
+import com.ge.digital.gearbox.mapper.MongoCcfRepository;
+import com.ge.digital.gearbox.mapper.MongoCtgRepository;
+import com.ge.digital.gearbox.mapper.MongoExCarRepository;
+import com.ge.digital.gearbox.mapper.MongoInCarRepository;
+import com.ge.digital.gearbox.mapper.MongoPreoxRepository;
+import com.ge.digital.gearbox.mapper.MongoProductionProcRepository;
+import com.ge.digital.gearbox.mapper.MongoTemperRepository;
+import com.ge.digital.gearbox.mapper.MongoTunnelRepository;
+import com.ge.digital.gearbox.mapper.MongoWashRepository;
+import com.ge.digital.gearbox.mq.Customer;
+import com.ge.digital.gearbox.util.SaveDateThread;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @Controller
@@ -29,12 +41,43 @@ public class HelloWorldRestController {
 	@Autowired
 	RestTemplate restTemplate;
 	@Autowired
-	RedisService redisService;
-	@Autowired
 	RedisTemplate<Object, Object> redisTemplate;
 	@Autowired
 	RedisConnectionFactory factory;
 
+	@Autowired
+	CustomMongoRepository customMongoRepository;
+
+	@Autowired
+	Customer customer;
+
+	@Autowired
+	MongoC2H2Repository mongoC2H2Repository;
+
+	@Autowired
+	MongoCcfRepository mongoCcfRepository;
+
+	@Autowired
+	MongoCtgRepository mongoCtgRepository;
+
+	@Autowired
+	MongoExCarRepository mongoExCarRepository;
+
+	@Autowired
+	MongoInCarRepository mongoInCarRepository;
+
+	@Autowired
+	MongoPreoxRepository mongoPreoxRepository;
+	@Autowired
+	MongoTemperRepository mongoTemperRepository;
+	@Autowired
+	MongoTunnelRepository mongoTunnelRepository;
+	@Autowired
+	MongoWashRepository mongoWashRepository;
+
+	@Autowired
+	MongoProductionProcRepository mongoProductionProcRepository;
+	
 	@RequestMapping(value = "/user/me", method = RequestMethod.GET)
 	@ResponseBody
 	public Principal user(Principal principal) {
@@ -71,7 +114,132 @@ public class HelloWorldRestController {
 		//// System.out.println(object);
 		// }
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(Math.random() * 100);
+		SaveDateThread saveDateThread1 = new SaveDateThread(mongoC2H2Repository, 1,"c2h2");
+		saveDateThread1.start();
+		SaveDateThread saveDateThread2 = new SaveDateThread(mongoCcfRepository, 2,"ccf");
+		saveDateThread2.start();
+		SaveDateThread saveDateThread3 = new SaveDateThread(mongoCtgRepository, 3,"ctg");
+		saveDateThread3.start();
+		SaveDateThread saveDateThread4 = new SaveDateThread(mongoExCarRepository, 4,"excar");
+		saveDateThread4.start();
+		SaveDateThread saveDateThread5 = new SaveDateThread(mongoInCarRepository, 5,"in car");
+		saveDateThread5.start();
+		SaveDateThread saveDateThread6 = new SaveDateThread(mongoPreoxRepository, 6,"preox");
+		saveDateThread6.start();
+		SaveDateThread saveDateThread7 = new SaveDateThread(mongoTemperRepository, 7,"temper");
+		saveDateThread7.start();
+		SaveDateThread saveDateThread8 = new SaveDateThread(mongoTunnelRepository, 8,"tunnel");
+		saveDateThread8.start();
+		SaveDateThread saveDateThread9 = new SaveDateThread(mongoWashRepository, 9,"wash");
+		saveDateThread9.start();
+		SaveDateThread saveDateThread10 = new SaveDateThread(mongoProductionProcRepository, 10,"proc");
+		saveDateThread10.start();
+		SaveDateThread saveDateThread11 = new SaveDateThread(mongoC2H2Repository, 1,"c2h22");
+		saveDateThread11.start();
+		SaveDateThread saveDateThread12 = new SaveDateThread(mongoCcfRepository, 2,"ccf2");
+		saveDateThread12.start();
+		SaveDateThread saveDateThread13 = new SaveDateThread(mongoCtgRepository, 3,"ctg2");
+		saveDateThread13.start();
+		SaveDateThread saveDateThread14 = new SaveDateThread(mongoExCarRepository, 4,"excar2");
+		saveDateThread14.start();
+		SaveDateThread saveDateThread15 = new SaveDateThread(mongoInCarRepository, 5,"in car2");
+		saveDateThread15.start();
+		SaveDateThread saveDateThread16 = new SaveDateThread(mongoPreoxRepository, 6,"preox2");
+		saveDateThread16.start();
+		SaveDateThread saveDateThread17 = new SaveDateThread(mongoTemperRepository, 7,"temper2");
+		saveDateThread17.start();
+		SaveDateThread saveDateThread18 = new SaveDateThread(mongoTunnelRepository, 8,"tunnel2");
+		saveDateThread18.start();
+		SaveDateThread saveDateThread19 = new SaveDateThread(mongoWashRepository, 9,"wash2");
+		saveDateThread19.start();
+		SaveDateThread saveDateThread20 = new SaveDateThread(mongoProductionProcRepository, 10,"proc2");
+		saveDateThread20.start();
+		SaveDateThread saveDateThread31 = new SaveDateThread(mongoC2H2Repository, 1,"c2h23");
+		saveDateThread31.start();
+		SaveDateThread saveDateThread32 = new SaveDateThread(mongoCcfRepository, 2,"ccf3");
+		saveDateThread32.start();
+		SaveDateThread saveDateThread33 = new SaveDateThread(mongoCtgRepository, 3,"ctg3");
+		saveDateThread33.start();
+		SaveDateThread saveDateThread34 = new SaveDateThread(mongoExCarRepository, 4,"excar3");
+		saveDateThread34.start();
+		SaveDateThread saveDateThread35 = new SaveDateThread(mongoInCarRepository, 5,"in car3");
+		saveDateThread35.start();
+		SaveDateThread saveDateThread36 = new SaveDateThread(mongoPreoxRepository, 6,"preox3");
+		saveDateThread36.start();
+		SaveDateThread saveDateThread37 = new SaveDateThread(mongoTemperRepository, 7,"temper3");
+		saveDateThread37.start();
+		SaveDateThread saveDateThread38 = new SaveDateThread(mongoTunnelRepository, 8,"tunnel3");
+		saveDateThread38.start();
+		SaveDateThread saveDateThread39 = new SaveDateThread(mongoWashRepository, 9,"wash3");
+		saveDateThread39.start();
+		SaveDateThread saveDateThread40 = new SaveDateThread(mongoProductionProcRepository, 10,"proc3");
+		saveDateThread40.start();
+		SaveDateThread saveDateThread41 = new SaveDateThread(mongoC2H2Repository, 1,"c2h24");
+		saveDateThread41.start();
+		SaveDateThread saveDateThread42 = new SaveDateThread(mongoCcfRepository, 2,"ccf4");
+		saveDateThread42.start();
+		SaveDateThread saveDateThread43 = new SaveDateThread(mongoCtgRepository, 3,"ctg4");
+		saveDateThread43.start();
+		SaveDateThread saveDateThread44 = new SaveDateThread(mongoExCarRepository, 4,"excar4");
+		saveDateThread44.start();
+		SaveDateThread saveDateThread45 = new SaveDateThread(mongoInCarRepository, 5,"in car4");
+		saveDateThread45.start();
+		SaveDateThread saveDateThread46 = new SaveDateThread(mongoPreoxRepository, 6,"preox4");
+		saveDateThread6.start();
+		SaveDateThread saveDateThread47 = new SaveDateThread(mongoTemperRepository, 7,"temper4");
+		saveDateThread47.start();
+		SaveDateThread saveDateThread48 = new SaveDateThread(mongoTunnelRepository, 8,"tunnel4");
+		saveDateThread48.start();
+		SaveDateThread saveDateThread49 = new SaveDateThread(mongoWashRepository, 9,"wash4");
+		saveDateThread49.start();
+		SaveDateThread saveDateThread50 = new SaveDateThread(mongoProductionProcRepository, 10,"proc4");
+		saveDateThread50.start();
+		SaveDateThread saveDateThread51 = new SaveDateThread(mongoC2H2Repository, 1,"c2h25");
+		saveDateThread51.start();
+		SaveDateThread saveDateThread52 = new SaveDateThread(mongoCcfRepository, 2,"ccf5");
+		saveDateThread52.start();
+		SaveDateThread saveDateThread53 = new SaveDateThread(mongoCtgRepository, 3,"ctg5");
+		saveDateThread53.start();
+		SaveDateThread saveDateThread54 = new SaveDateThread(mongoExCarRepository, 4,"excar5");
+		saveDateThread54.start();
+		SaveDateThread saveDateThread55 = new SaveDateThread(mongoInCarRepository, 5,"in car5");
+		saveDateThread55.start();
+		SaveDateThread saveDateThread56 = new SaveDateThread(mongoPreoxRepository, 6,"preox5");
+		saveDateThread56.start();
+		SaveDateThread saveDateThread57 = new SaveDateThread(mongoTemperRepository, 7,"temper5");
+		saveDateThread57.start();
+		SaveDateThread saveDateThread58 = new SaveDateThread(mongoTunnelRepository, 8,"tunnel5");
+		saveDateThread58.start();
+		SaveDateThread saveDateThread59 = new SaveDateThread(mongoWashRepository, 9,"wash5");
+		saveDateThread59.start();
+		SaveDateThread saveDateThread60 = new SaveDateThread(mongoProductionProcRepository, 10,"proc5");
+		saveDateThread60.start();
+		SaveDateThread saveDateThread61 = new SaveDateThread(mongoC2H2Repository, 1,"c2h26");
+		saveDateThread61.start();
+		SaveDateThread saveDateThread62 = new SaveDateThread(mongoCcfRepository, 2,"ccf6");
+		saveDateThread62.start();
+		SaveDateThread saveDateThread63 = new SaveDateThread(mongoCtgRepository, 3,"ctg6");
+		saveDateThread63.start();
+		SaveDateThread saveDateThread64 = new SaveDateThread(mongoExCarRepository, 4,"excar6");
+		saveDateThread64.start();
+		SaveDateThread saveDateThread65 = new SaveDateThread(mongoInCarRepository, 5,"in car6");
+		saveDateThread65.start();
+		SaveDateThread saveDateThread66 = new SaveDateThread(mongoPreoxRepository, 6,"preox6");
+		saveDateThread66.start();
+		SaveDateThread saveDateThread67 = new SaveDateThread(mongoTemperRepository, 7,"temper6");
+		saveDateThread67.start();
+		SaveDateThread saveDateThread68 = new SaveDateThread(mongoTunnelRepository, 8,"tunnel6");
+		saveDateThread68.start();
+		SaveDateThread saveDateThread69 = new SaveDateThread(mongoWashRepository, 9,"wash6");
+		saveDateThread69.start();
+		SaveDateThread saveDateThread70 = new SaveDateThread(mongoProductionProcRepository, 10,"proc6");
+		saveDateThread70.start();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// rsp.setErrorCode("0000");
 		return rsp;
 	}

@@ -154,7 +154,7 @@
         <password>jesse.ji237</password> 
         <smtpPort>25</smtpPort> 
         <SSL>true</SSL>  
-        <to>smluyi@163.com</to>  
+        <to>smluyi1@163.com</to>  
         <from>jesse_ji521@sina.com</from>  
         <subject>test</subject>  
         <asynchronousSending>true</asynchronousSending>

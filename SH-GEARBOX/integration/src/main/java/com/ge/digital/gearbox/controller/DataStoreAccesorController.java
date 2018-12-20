@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import com.ge.digital.gearbox.common.response.NormalResponse;
 import com.ge.digital.gearbox.mapper.MongoCcfRepository;
 import com.ge.digital.gearbox.mapper.MongoProductionProcRepository;
-import com.ge.digital.gearbox.redis.RedisService;
 import com.ge.digital.gearbox.service.DataStoreService;
 
 @Controller
@@ -30,8 +29,6 @@ public class DataStoreAccesorController {
 
 	@Autowired
 	RestTemplate restTemplate;
-	@Autowired
-	RedisService redisService;
 	@Autowired
 	RedisTemplate<Object, Object> redisTemplate;
 	@Autowired
@@ -47,7 +44,7 @@ public class DataStoreAccesorController {
 	@ResponseBody
 	public Object findProc(@RequestParam Integer loadNumber) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findProdProc(loadNumber));
+		rsp.setResData(dataStoreService.findProdProc(loadNumber));
 		return rsp;
 	}
 
@@ -56,16 +53,23 @@ public class DataStoreAccesorController {
 	public Object findCcf(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findCcf(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findCcf(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
+	@RequestMapping(value = "/getCCF2", method = RequestMethod.GET)
+	@ResponseBody
+	public Object findCcf(@RequestParam String equipId) {
+		NormalResponse rsp = new NormalResponse();
+		rsp.setResData(mongoCcfRepository.findByEquipId(equipId));
+		return rsp;
+	}
 	@RequestMapping(value = "/getCtg", method = RequestMethod.GET)
 	@ResponseBody
 	public Object getCtg(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findCtg(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findCtg(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
@@ -74,7 +78,7 @@ public class DataStoreAccesorController {
 	public Object getPreox(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findPreox(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findPreox(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
@@ -83,7 +87,7 @@ public class DataStoreAccesorController {
 	public Object getTemper(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findTemper(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findTemper(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
@@ -92,7 +96,7 @@ public class DataStoreAccesorController {
 	public Object getTunnel(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findTunnel(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findTunnel(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
@@ -101,7 +105,7 @@ public class DataStoreAccesorController {
 	public Object getWash(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findWash(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findWash(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
@@ -110,7 +114,7 @@ public class DataStoreAccesorController {
 	public Object getC2H2(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam	String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findC2H2(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findC2H2(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
@@ -119,7 +123,7 @@ public class DataStoreAccesorController {
 	public Object getExCar(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findExCar(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findExCar(equipId, new Date(start), new Date(end), line));
 		return rsp;
 	}
 
@@ -128,7 +132,16 @@ public class DataStoreAccesorController {
 	public Object getInCar(@RequestParam String equipId, @RequestParam Long start, @RequestParam Long end,
 			@RequestParam	String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findInCar(equipId, new Date(start), new Date(end), line));
+		rsp.setResData(dataStoreService.findInCar(equipId, new Date(start), new Date(end), line));
+		return rsp;
+	}
+	
+	@RequestMapping(value = "/getELineStatus", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getELineStatus(@RequestParam Long start, @RequestParam Long end,
+			@RequestParam	String line) {
+		NormalResponse rsp = new NormalResponse();
+		rsp.setResData(dataStoreService.findELineStatus(new Date(start), new Date(end), line));
 		return rsp;
 	}
 	@RequestMapping(value = "/getST", method = RequestMethod.GET)
@@ -136,7 +149,7 @@ public class DataStoreAccesorController {
 	public Object getST(@RequestParam Integer bufferType,
 			@RequestParam	String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.findStorageTableExchanges(bufferType, line));
+		rsp.setResData(dataStoreService.findStorageTableExchanges(bufferType, line));
 		return rsp;
 	}
 	
@@ -145,7 +158,7 @@ public class DataStoreAccesorController {
 	public Object getReciptParameter(@RequestParam String recipeNumber,
 			@RequestParam	String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.getByRecipeNumberAndLine(recipeNumber, line));
+		rsp.setResData(dataStoreService.getByRecipeNumberAndLine(recipeNumber, line));
 		return rsp;
 	}
 	
@@ -154,7 +167,7 @@ public class DataStoreAccesorController {
 	public Object getSyncRecipt(@RequestParam String recipeNumber,
 			@RequestParam	String line) {
 		NormalResponse rsp = new NormalResponse();
-		rsp.setBody(dataStoreService.getBySyncRecipeAndLine(recipeNumber, line));
+		rsp.setResData(dataStoreService.getBySyncRecipeAndLine(recipeNumber, line));
 		return rsp;
 	}
 }

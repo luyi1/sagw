@@ -39,8 +39,9 @@ public class LineProcessTimeValidator implements MasterDataValidatorI<LineProces
 			if (keyCount != null && keyCount > 1) {
 				excelObj.addError(I18NHelper.getI18NErrorMsg(RestResponseCode.UPLOAD_RECORD_ALREADY_EXIST));
 			}
-			List<LineProcessTime> lineProcessTimes = lineProcessTimeRepository
-					.findByPartNumber(excelObj.getCombinedKey());
+			LineProcessTimeExcelSupport lineProcessTime = (LineProcessTimeExcelSupport) object;
+			List<LineProcessTime> lineProcessTimes = lineProcessTimeRepository.findByPartNumberAndLine(lineProcessTime.getPartNumber(), lineProcessTime.getLine());
+					
 			if (!lineProcessTimes.isEmpty()) {
 				excelObj.setId(lineProcessTimes.get(0).getId());
 			}
@@ -54,8 +55,7 @@ public class LineProcessTimeValidator implements MasterDataValidatorI<LineProces
 
 		for (Object object : list) {
 			LineProcessTimeExcelSupport lineProcessTime = (LineProcessTimeExcelSupport) object;
-			List<LineProcessTime> lineProcessTimes = lineProcessTimeRepository
-					.findByPartNumber(lineProcessTime.getCombinedKey());
+			List<LineProcessTime> lineProcessTimes = lineProcessTimeRepository.findByPartNumberAndLine(lineProcessTime.getPartNumber(), lineProcessTime.getLine());
 			if (!lineProcessTimes.isEmpty()) {
 				lineProcessTime.setId(lineProcessTimes.stream().findAny().get().getId());
 				deletelist.add(lineProcessTime);

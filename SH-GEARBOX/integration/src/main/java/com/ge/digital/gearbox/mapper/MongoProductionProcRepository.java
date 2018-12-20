@@ -13,5 +13,6 @@ public interface MongoProductionProcRepository extends MongoRepository<Productio
 
 	ProductionProc findByLineAndLoadNumber(String line, String loadNumber);
 
+    public void deleteByLoadNumber(Integer loadNumber); 
 }
 

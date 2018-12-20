@@ -12,8 +12,10 @@ import com.ge.digital.schedule.excelutil.ExcelUploadSupport;
 @Entity
 public class LineProcessTimeExcelSupport extends LineProcessTime implements ExcelUploadSupport {
 
-	@ExcelSign(title = "part", checkNull = true)
-	String part;
+	@ExcelSign(title = "partNumber", checkNull = true)
+	String partNumber;
+	@ExcelSign(title = "line", checkNull = true)
+	String line;
 	@ExcelSign(title = "OP10", checkNull = true)
 	Long OP10;
 	@ExcelSign(title = "OP20", checkNull = true)
@@ -65,7 +67,7 @@ public class LineProcessTimeExcelSupport extends LineProcessTime implements Exce
 
 	@Override
 	public String getCombinedKey() {
-		return getPartNumber();
+		return getPartNumber()+":"+getLine();
 	}
 
 }

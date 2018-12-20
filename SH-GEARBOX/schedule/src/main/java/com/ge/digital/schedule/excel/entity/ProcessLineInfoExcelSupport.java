@@ -14,8 +14,10 @@ import com.ge.digital.schedule.excelutil.ExcelUploadSupport;
 @Entity
 public class ProcessLineInfoExcelSupport extends ProcessLineInfo implements ExcelUploadSupport {
 
-	@ExcelSign(title = "part")
-	String partNumber;
+	@ExcelSign(title = "heatingOutCode", checkNull = true)
+	String heatingOutCode;
+	@ExcelSign(title = "quantityPerCharge", checkNull = true)
+	Integer quantityPerCharge;
 	@ExcelSign(title = "line1", checkNull = true)
 	Boolean line1;
 	@ExcelSign(title = "line2", checkNull = true)
@@ -26,16 +28,16 @@ public class ProcessLineInfoExcelSupport extends ProcessLineInfo implements Exce
 	Boolean line4;
 	@ExcelSign(title = "line5", checkNull = true)
 	Boolean line5;
-	@ExcelSign(title = "line1PriorityFlg", checkNull = true)
-	Boolean line1PriorityFlg;
-	@ExcelSign(title = "line2PriorityFlg", checkNull = true)
-	Boolean line2PriorityFlg;
-	@ExcelSign(title = "line3PriorityFlg", checkNull = true)
-	Boolean line3PriorityFlg;
-	@ExcelSign(title = "line4PriorityFlg", checkNull = true)
-	Boolean line4PriorityFlg;
-	@ExcelSign(title = "line5PriorityFlg", checkNull = true)
-	Boolean line5PriorityFlg;
+	@ExcelSign(title = "line1PriorityLevel", checkNull = true)
+	Integer line1PriorityLevel;
+	@ExcelSign(title = "line2PriorityLevel", checkNull = true)
+	Integer line2PriorityLevel;
+	@ExcelSign(title = "line3PriorityLevel", checkNull = true)
+	Integer line3PriorityLevel;
+	@ExcelSign(title = "line4PriorityLevel", checkNull = true)
+	Integer line4PriorityLevel;
+	@ExcelSign(title = "line5PriorityLevel", checkNull = true)
+	Integer line5PriorityLevel;
 	
 	private long batchUploadID;
 
@@ -75,7 +77,7 @@ public class ProcessLineInfoExcelSupport extends ProcessLineInfo implements Exce
 
 	@Override
 	public String getCombinedKey() {
-		return getPartNumber();
+		return getHeatingOutCode()+":"+getQuantityPerCharge();
 	}
 
 }

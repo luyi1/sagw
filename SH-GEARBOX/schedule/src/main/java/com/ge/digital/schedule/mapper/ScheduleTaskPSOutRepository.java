@@ -25,7 +25,9 @@ public interface ScheduleTaskPSOutRepository extends JpaRepository<ScheduleTaskP
 	@Query(value = "SELECT * FROM PR_Schedule.sh_scheduletaskpsout WHERE ScheduleOrderNo = ?1 order by OP10Starttime", nativeQuery = true)
 	List<ScheduleTaskPSOut> findByScheduleOrderNo(String ScheduleOrderNo);
 	
-
+	@Query(value = "SELECT count(*) FROM PR_Schedule.sh_scheduletaskpsout ", nativeQuery = true)
+	Long count2();
+	
 	@Modifying
 	@Transactional
 	@Query(value = "truncate table pr_schedule.sh_scheduletaskpsout", nativeQuery = true)

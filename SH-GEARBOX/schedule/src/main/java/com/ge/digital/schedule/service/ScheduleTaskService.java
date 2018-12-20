@@ -52,18 +52,15 @@ public class ScheduleTaskService {
 	@Autowired
 	RedisService redisService;
 
-	public String getTaskNo() {
-		String currentDate = DateUtils.formatDate(new Date(), "yyyyMMdd");
-		Long incr = redisService.taskIncr();
-		if (incr >= 1000) {
-			return new String(currentDate + incr);
+	public String getTaskNo(String scheduleOrderNo) {
+		Long incr = redisService.taskIncr(scheduleOrderNo);
+		if (incr >= 100) {
+			return new String(scheduleOrderNo + incr);
 		} else {
-			if (incr < 1000 && incr > 99) {
-				return new String(currentDate + "0" + incr);
-			} else if (incr < 100 && incr > 9) {
-				return new String(currentDate + "00" + incr);
+			if (incr < 100 && incr > 9) {
+				return new String(scheduleOrderNo + "0" + incr);
 			} else
-				return new String(currentDate + "000" + incr);
+				return new String(scheduleOrderNo + "00" + incr);
 		}
 	}
 

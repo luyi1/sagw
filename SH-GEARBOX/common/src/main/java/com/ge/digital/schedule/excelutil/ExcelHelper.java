@@ -33,6 +33,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ge.digital.gearbox.common.message.I18NHelper;
+import com.ge.digital.gearbox.common.response.RestResponseCode;
+
 //import com.ge.digital.spo.chain.controller.outputbean.AndonDetail;
 
 /**
@@ -180,22 +183,21 @@ public class ExcelHelper {
 
 						String formatCellValue = formatter.formatCellValue(cell);
 						nullCheck(header, formatCellValue, addErrorMethod, entityupload);
-
+						contentCheck(header, formatCellValue, addErrorMethod, entityupload);
 						if (type.equals("class java.util.Date")) {
 							try {
 								Date celldate = cell.getDateCellValue();
 								method.invoke(entity, celldate);
 							} catch (IllegalStateException e) {
 								// todo add date validate handler
-								addErrorMethod.invoke(entityupload,
-										header.getTitle() + " Column Error:Date format error " + formatCellValue);
+								addErrorMethod.invoke(entityupload, I18NHelper.getI18NErrorMsg(RestResponseCode.EXCEL_ERROR_01,header.getTitle(),formatCellValue));
 								e.printStackTrace();
 							}
 						} else if (type.equals("class java.lang.Boolean") || type.equals("boolean")) {
 							Boolean booleanv = false;
-							if (formatCellValue.equals("Y") || formatCellValue.equals("TRUE")) {
+							if (formatCellValue.equalsIgnoreCase("Y") || formatCellValue.equalsIgnoreCase("TRUE")) {
 								booleanv = true;
-							} else if (formatCellValue.equals("N") || formatCellValue.equals("FALSE")) {
+							} else if (formatCellValue.equalsIgnoreCase("N") || formatCellValue.equalsIgnoreCase("FALSE")) {
 								booleanv = false;
 							} else {
 								addErrorMethod.invoke(entityupload, "Wrong boolean value for " + header.getTitle());
@@ -207,8 +209,10 @@ public class ExcelHelper {
 								try {
 									newnumber = Integer.valueOf(formatCellValue);
 								} catch (NumberFormatException e) {
-									addErrorMethod.invoke(entityupload,
-											"Wrong Integer value for " + header.getTitle() + ":" + formatCellValue);
+									addErrorMethod.invoke(entityupload, I18NHelper.getI18NErrorMsg(RestResponseCode.EXCEL_ERROR_02,header.getTitle(),formatCellValue));
+									
+//									addErrorMethod.invoke(entityupload,
+//											"Wrong Integer value for " + header.getTitle() + ":" + formatCellValue);
 								}
 								numberRangeCheck(header, newnumber, addErrorMethod, entityupload);
 								method.invoke(entity, newnumber);
@@ -296,7 +300,7 @@ public class ExcelHelper {
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (header.getCheckNull()) {
 			if (!isNotNull(formatCellValue)) {
-				addErrorMethod.invoke(entityupload, header.getTitle() + " Column Error:Can't assign null");
+				addErrorMethod.invoke(entityupload, I18NHelper.getI18NErrorMsg(RestResponseCode.EXCEL_ERROR_03,header.getTitle()));
 				return false;
 			}
 		}
@@ -317,9 +321,7 @@ public class ExcelHelper {
 				}
 			}
 			if (!matched) {
-				addErrorMethod.invoke(entityupload,
-						header.getTitle() + " Column Error:Content mismatched " + formatCellValue);
-				return false;
+				addErrorMethod.invoke(entityupload, I18NHelper.getI18NErrorMsg(RestResponseCode.EXCEL_ERROR_04,header.getTitle(),formatCellValue));				
 			}
 
 		}
@@ -342,7 +344,8 @@ public class ExcelHelper {
 				maximum = Integer.parseInt(ranges[1]);
 			}
 			if (number > maximum || number < minimum) {
-				addErrorMethod.invoke(entityupload, header.getTitle() + " Column Number Range exceed:" + numberrange);
+				addErrorMethod.invoke(entityupload, I18NHelper.getI18NErrorMsg(RestResponseCode.EXCEL_ERROR_05,header.getTitle(),numberrange));
+				
 				return false;
 			}
 

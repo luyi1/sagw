@@ -4,104 +4,101 @@ import java.util.Date;
 
 public class TakeOrderDTO {
 
-	String TaskId;
-	String PartsCode;
-	String Line;
-	Date ProductTime;
-	Date DownLineTime;
-	String TaskType;
-	String TaskStatus;
-	Integer PriorityTask;
-	String ScheduleTask;
-	String RepairBatchNumber;
-	String ReproductionFlag;
-
-	public String getTaskId() {
-		return TaskId;
+	String taskNo;
+	String partNumber;
+	String partName;
+	String line;
+	Date productTime;
+	Date downLineTime;
+	Date requiredLineExitDate;
+	String scheduleStatus;
+	String repairBatchNumber;
+	String heatingOutCode;
+    Integer quantityPerCharge;
+    String processCardNumber;
+    Date scheduleIssueTime;
+    
+    
+	public Date getScheduleIssueTime() {
+		return scheduleIssueTime;
 	}
-
-	public void setTaskId(String taskId) {
-		TaskId = taskId;
+	public void setScheduleIssueTime(Date scheduleIssueTime) {
+		this.scheduleIssueTime = scheduleIssueTime;
 	}
-
-	public String getPartsCode() {
-		return PartsCode;
+	public String getTaskNo() {
+		return taskNo;
 	}
-
-	public void setPartsCode(String partsCode) {
-		PartsCode = partsCode;
+	public void setTaskNo(String taskNo) {
+		this.taskNo = taskNo;
 	}
-
+	public String getPartNumber() {
+		return partNumber;
+	}
+	public void setPartNumber(String partNumber) {
+		this.partNumber = partNumber;
+	}
+	public String getPartName() {
+		return partName;
+	}
+	public void setPartName(String partName) {
+		this.partName = partName;
+	}
+	
 	public String getLine() {
-		return Line;
+		return line;
 	}
-
 	public void setLine(String line) {
-		Line = line;
+		this.line = line;
 	}
-
 	public Date getProductTime() {
-		return ProductTime;
+		return productTime;
 	}
-
 	public void setProductTime(Date productTime) {
-		ProductTime = productTime;
+		this.productTime = productTime;
 	}
-
 	public Date getDownLineTime() {
-		return DownLineTime;
+		return downLineTime;
 	}
-
 	public void setDownLineTime(Date downLineTime) {
-		DownLineTime = downLineTime;
+		this.downLineTime = downLineTime;
 	}
-
-	public String getTaskType() {
-		return TaskType;
+	public Date getRequiredLineExitDate() {
+		return requiredLineExitDate;
 	}
-
-	public void setTaskType(String taskType) {
-		TaskType = taskType;
+	public void setRequiredLineExitDate(Date requiredLineExitDate) {
+		this.requiredLineExitDate = requiredLineExitDate;
 	}
-
-	public String getTaskStatus() {
-		return TaskStatus;
+	public String getScheduleStatus() {
+		return scheduleStatus;
 	}
-
-	public void setTaskStatus(String taskStatus) {
-		TaskStatus = taskStatus;
+	public void setScheduleStatus(String scheduleStatus) {
+		this.scheduleStatus = scheduleStatus;
 	}
-
-	public Integer getPriorityTask() {
-		return PriorityTask;
-	}
-
-	public void setPriorityTask(Integer priorityTask) {
-		PriorityTask = priorityTask;
-	}
-
-	public String getScheduleTask() {
-		return ScheduleTask;
-	}
-
-	public void setScheduleTask(String scheduleTask) {
-		ScheduleTask = scheduleTask;
-	}
-
 	public String getRepairBatchNumber() {
-		return RepairBatchNumber;
+		return repairBatchNumber;
 	}
-
 	public void setRepairBatchNumber(String repairBatchNumber) {
-		RepairBatchNumber = repairBatchNumber;
+		this.repairBatchNumber = repairBatchNumber;
 	}
+	public String getHeatingOutCode() {
+		return heatingOutCode;
+	}
+	public void setHeatingOutCode(String heatingOutCode) {
+		this.heatingOutCode = heatingOutCode;
+	}
+	public Integer getQuantityPerCharge() {
+		return quantityPerCharge;
+	}
+	public void setQuantityPerCharge(Integer quantityPerCharge) {
+		this.quantityPerCharge = quantityPerCharge;
+	}
+	public String getProcessCardNumber() {
+		return processCardNumber;
+	}
+	public void setProcessCardNumber(String processCardNumber) {
+		this.processCardNumber = processCardNumber;
+	}
+    
 
-	public String getReproductionFlag() {
-		return ReproductionFlag;
-	}
-
-	public void setReproductionFlag(String reproductionFlag) {
-		ReproductionFlag = reproductionFlag;
-	}
 
 }

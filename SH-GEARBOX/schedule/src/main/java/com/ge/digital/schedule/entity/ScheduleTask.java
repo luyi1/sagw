@@ -15,7 +15,7 @@ public class ScheduleTask extends ModelBase {
 	 */
 	private static final long serialVersionUID = 1L;
 	String partNumber;
-	Integer reworkBatch;
+	String reworkBatch;
 	String taskNo;
 	String scheduleOrderNo;
 	String line;
@@ -37,12 +37,12 @@ public class ScheduleTask extends ModelBase {
 	Date OP40EndTime;
 	Date OP50EndTime;
 	Date OP60EndTime;
-	String priorityTask;
+	Integer priorityLevel;
 	String scheduleStatus;
 	Date scheduleStartTime;
 	Date scheduleEndTime;
-	Date taskStartTime;
-	Date taskEndTime;
+//	Date taskStartTime;
+//	Date taskEndTime;
 	Integer quantityPerCharge;
 
 	@Column(name = "partnumber")
@@ -55,11 +55,11 @@ public class ScheduleTask extends ModelBase {
 	}
 
 	@Column(name = "reworkbatch")
-	public Integer getReworkBatch() {
+	public String getReworkBatch() {
 		return reworkBatch;
 	}
 
-	public void setReworkBatch(Integer reworkBatch) {
+	public void setReworkBatch(String reworkBatch) {
 		this.reworkBatch = reworkBatch;
 	}
 
@@ -252,13 +252,13 @@ public class ScheduleTask extends ModelBase {
 		OP60EndTime = oP60EndTime;
 	}
 
-	@Column(name = "prioritytask")
-	public String getPriorityTask() {
-		return priorityTask;
+	@Column(name = "prioritylevel")
+	public Integer getPriorityLevel() {
+		return priorityLevel;
 	}
 
-	public void setPriorityTask(String priorityTask) {
-		this.priorityTask = priorityTask;
+	public void setPriorityLevel(Integer priorityLevel) {
+		this.priorityLevel = priorityLevel;
 	}
 
 	@Column(name = "schedulestatus")
@@ -296,30 +296,86 @@ public class ScheduleTask extends ModelBase {
 		this.scheduleEndTime = new Date(scheduleEndTime);
 	}
 
-	@Column(name = "taskstarttime")
-	public Date getTaskStartTime() {
-		return taskStartTime;
+	
+	String heatingOutCode;
+	Date firstScheduleLineEntryTime;
+	Date firstScheduleLineExitTime;
+	Boolean cancelFlg;
+	Long scheduleRecordNo;
+	String taskStatus;
+	String materialReadyStatus;
+	Date materialReadyScheduleTime;
+
+	@Column(name = "heatingoutcode")
+	public String getHeatingOutCode() {
+		return heatingOutCode;
 	}
 
-	public void setTaskStartTime(Date taskStartTime) {
-		this.taskStartTime = taskStartTime;
+	public void setHeatingOutCode(String heatingOutCode) {
+		this.heatingOutCode = heatingOutCode;
 	}
 
-	public void setTaskStartTime(long taskStartTime) {
-		this.taskStartTime = new Date(taskStartTime);
+	@Column(name = "firstschedulelineentrytime")
+	public Date getFirstScheduleLineEntryTime() {
+		return firstScheduleLineEntryTime;
 	}
 
-	@Column(name = "taskendtime")
-	public Date getTaskEndTime() {
-		return taskEndTime;
+	public void setFirstScheduleLineEntryTime(Date firstScheduleLineEntryTime) {
+		this.firstScheduleLineEntryTime = firstScheduleLineEntryTime;
+	}
+	
+	@Column(name = "firstschedulelineexittime")
+	public Date getFirstScheduleLineExitTime() {
+		return firstScheduleLineExitTime;
 	}
 
-	public void setTaskEndTime(Date taskEndTime) {
-		this.taskEndTime = taskEndTime;
+	public void setFirstScheduleLineExitTime(Date firstScheduleLineExitTime) {
+		this.firstScheduleLineExitTime = firstScheduleLineExitTime;
+	}
+	
+	@Column(name = "cancelflg")
+	public Boolean getCancelFlg() {
+		return cancelFlg;
 	}
 
-	public void setTaskEndTime(long taskEndTime) {
-		this.taskEndTime = new Date(taskEndTime);
+	public void setCancelFlg(Boolean cancelFlg) {
+		this.cancelFlg = cancelFlg;
+	}
+
+	@Column(name = "schedulerecordno")
+	public Long getScheduleRecordNo() {
+		return scheduleRecordNo;
+	}
+
+	public void setScheduleRecordNo(Long scheduleRecordNo) {
+		this.scheduleRecordNo = scheduleRecordNo;
+	}
+
+	@Column(name = "taskstatus")
+	public String getTaskStatus() {
+		return taskStatus;
+	}
+
+	public void setTaskStatus(String taskStatus) {
+		this.taskStatus = taskStatus;
+	}
+
+	@Column(name = "materialreadystatus")
+	public String getMaterialReadyStatus() {
+		return materialReadyStatus;
+	}
+
+	public void setMaterialReadyStatus(String materialReadyStatus) {
+		this.materialReadyStatus = materialReadyStatus;
+	}
+
+	@Column(name = "materialreadyscheduletime")
+	public Date getMaterialReadyScheduleTime() {
+		return materialReadyScheduleTime;
+	}
+
+	public void setMaterialReadyScheduleTime(Date materialReadyScheduleTime) {
+		this.materialReadyScheduleTime = materialReadyScheduleTime;
 	}
 
 	@Column(name = "quantitypercharge")

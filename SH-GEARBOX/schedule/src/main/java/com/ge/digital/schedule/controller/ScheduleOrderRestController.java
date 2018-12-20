@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +24,10 @@ import com.ge.digital.gearbox.common.response.BizErrorResponse;
 import com.ge.digital.gearbox.common.response.NormalResponse;
 import com.ge.digital.gearbox.common.response.RestResponseCode;
 import com.ge.digital.schedule.entity.ScheduleOrder;
+import com.ge.digital.schedule.entity.ScheduleOrderExtend;
+import com.ge.digital.schedule.excel.entity.HeatingInExcelSupport;
 import com.ge.digital.schedule.excel.entity.ScheduleOrderExcelSupport;
+import com.ge.digital.schedule.excel.entity.ScheduleOrderNewExcelSupport;
 import com.ge.digital.schedule.excelutil.ExcelUploadSupport;
 import com.ge.digital.schedule.mapper.LineWorkstationStatusRepository;
 import com.ge.digital.schedule.mq.MessageQueueProducer;
@@ -32,6 +37,8 @@ import com.ge.digital.schedule.service.ScheduleTaskService;
 import com.ge.digital.schedule.service.UploadingService;
 import com.ge.digital.schedule.util.ExportExcelUtils;
 import com.ge.digital.schedule.vo.ExcelData;
+import com.ge.digital.schedule.vo.ScheduleInput;
+import com.ge.digital.schedule.vo.ScheduleOrderSavingBean;
 import com.ge.digital.schedule.vo.ScheduleTaskVO;
 
 import io.swagger.annotations.Api;
@@ -57,10 +64,100 @@ public class ScheduleOrderRestController {
 	ScheduleOrderService scheduleOrderService;
 	@Autowired
 	ScheduleTaskService scheduleTaskService;
-
 	@Autowired
 	LineWorkstationStatusRepository lineWorkstationStatusRepository;
 
+	@RequestMapping(value = "/uploadHeatOut", method = RequestMethod.POST)
+	public Object uploadHeatOut(@RequestParam("file") MultipartFile file) {
+		NormalResponse rsp = new NormalResponse();
+		try {
+			//redisService.flushTempData();
+			List<ScheduleOrderNewExcelSupport> scheduleOrders = new ArrayList<>();
+			List<? extends ExcelUploadSupport> list = uploadingService.excel2Object(file,
+					ScheduleOrderNewExcelSupport.class);
+			// 保存order到redis
+			rsp.setResData(list);
+		} catch (RuntimeException | IOException e) {
+			e.printStackTrace();
+			log.error("line uploading error!", e);
+			return new BizErrorResponse(RestResponseCode.UPLOAD_EXCEPTION);
+		}
+		return rsp;
+
+	}
+	
+	@RequestMapping(value = "/uploadHeatIn", method = RequestMethod.POST)
+	public Object uploadHeatIn(@RequestParam("file") MultipartFile file) {
+		NormalResponse rsp = new NormalResponse();
+		try {
+			//redisService.flushTempData();
+			List<? extends ExcelUploadSupport> list = uploadingService.excel2Object(file,
+					HeatingInExcelSupport.class);
+			// 保存order到redis
+			rsp.setResData(list);
+		} catch (RuntimeException | IOException e) {
+			e.printStackTrace();
+			log.error("line uploading error!", e);
+			return new BizErrorResponse(RestResponseCode.UPLOAD_EXCEPTION);
+		}
+		return rsp;
+
+	}
+	
+	@RequestMapping(value = "/findProcessCard", method = RequestMethod.GET)
+	public Object findProcessCard(String processCard) {
+		NormalResponse rsp = new NormalResponse();
+		Boolean hasCard = scheduleOrderService.findProcessCard(processCard);
+		rsp.setResData(hasCard);
+		return rsp;
+	}
+	@RequestMapping(value = "/confirmSave", method = RequestMethod.POST)
+	public Object confirmSave(@RequestBody ScheduleOrderSavingBean sb){
+		NormalResponse rsp = new NormalResponse();
+
+		Boolean ok = scheduleOrderService.confirmSave(sb);
+		rsp.setResData(ok);	
+		return rsp;
+	}
+	
+	@RequestMapping(value = "/preCheckAddCancel", method = RequestMethod.POST)
+	public Object preCheckAddCancel(@RequestBody List<ScheduleOrder> sos){
+		NormalResponse rsp = new NormalResponse();
+		Boolean ok = scheduleOrderService.preCheckAddCancel(sos);
+		rsp.setResData(ok);	
+		return rsp;
+	}
+	
+	@RequestMapping(value = "/findCancelTask", method = RequestMethod.GET)
+	public Object findCancelTask(){
+		NormalResponse rsp = new NormalResponse();
+		Map<String,List<ScheduleOrderExtend>> map = scheduleOrderService.findCancelTask();
+		rsp.setResData(map);	
+		return rsp;
+	}
+	
+	@RequestMapping(value = "/getPartNumber", method = RequestMethod.POST)
+	public Object getPartNumber(@RequestBody ScheduleOrderNewExcelSupport so){
+		NormalResponse rsp = new NormalResponse();
+		String partNumber = scheduleOrderService.getPartNumber(so);
+		rsp.setResData(partNumber);	
+		return rsp;
+	}
+	
+	@RequestMapping(value = "/getPartNumberFromHeatIn", method = RequestMethod.POST)
+	public Object getPartNumberFromHeatIn(@RequestBody HeatingInExcelSupport hi){
+		NormalResponse rsp = new NormalResponse();
+		String partNumber = scheduleOrderService.getAllPartNumberForHeatingIn(hi);
+		rsp.setResData(partNumber);	
+		return rsp;
+	}
+	@RequestMapping(value = "/getNow", method = RequestMethod.GET)
+	public Object getLockDay(){
+		NormalResponse rsp = new NormalResponse();
+		Date now = new Date();
+		rsp.setResData(now);	
+		return rsp;
+	}
 	@RequestMapping(value = "/uploadScheduleOrder", method = RequestMethod.POST)
 	public Object uploadScheduleOrder(@RequestParam("file") MultipartFile file, String type) {
 		NormalResponse rsp = new NormalResponse();
@@ -88,7 +185,7 @@ public class ScheduleOrderRestController {
 			}
 			// 保存order到redis
 			redisService.setOrders(scheduleOrders);
-			rsp.setBody(list);
+			rsp.setResData(list);
 			if (!hasError) {
 				messageQueueProducer.rabbitMasterDatacheck();
 				messageQueueProducer.rabbitDeviceAndLineCheck();
@@ -109,7 +206,7 @@ public class ScheduleOrderRestController {
 		BizErrorResponse bizError = new BizErrorResponse();
 		try {
 			scheduleOrderService.confirmScheduleOrder();
-			rsp.setBody("正在检查");
+			rsp.setResData("正在检查");
 			return rsp;
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -3,7 +3,7 @@ eureka:
     hostname: eurekaserver
   client:
     serviceUrl:
-      defaultZone: http://localhost:8887/eureka/
+      defaultZone: http://10.1.4.24:8762/eureka/
     fetchRegistry: false
   server: 
     enableSelfPreservation: false

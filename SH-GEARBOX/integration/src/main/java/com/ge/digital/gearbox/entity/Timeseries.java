@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Timeseries {
-	String euipId;
+	String equipId;
 	String line;
 
 	public String getLine() {
@@ -46,12 +46,12 @@ public class Timeseries {
 		this.plusData3 = plusData3;
 	}
 
-	public String getEuipId() {
-		return euipId;
+	public String getEquipId() {
+		return equipId;
 	}
 
-	public void setEuipId(String euipId) {
-		this.euipId = euipId;
+	public void setEquipId(String equipId) {
+		this.equipId = equipId;
 	}
 
 	public Date getTimestamp() {

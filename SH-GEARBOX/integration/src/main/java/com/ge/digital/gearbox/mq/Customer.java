@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 import com.ge.digital.gearbox.mapper.CustomMongoRepository;
 import com.ge.digital.gearbox.mapper.jpa.JpaArchiveHistoryRepository;
 import com.ge.digital.gearbox.schedule.ArchiveProcessThread;
+import com.ge.digital.gearbox.schedule.ArchivePublicObject;
+import com.ge.digital.gearbox.service.RedisService;
 
 @Component
 public class Customer {
@@ -39,23 +41,34 @@ public class Customer {
 	@Autowired
 	CustomMongoRepository customMongoRepository;
 
+	@Autowired
+	RedisService redisService;
+
 	@Transactional
 	@RabbitListener(queues = "integration.scheduletask.archive")
 	public void archive(Long time) {
 		log.info("archive begin , args{}", time);
 		try {
-			// 初始化
+			int totalThreadCount = 0;
+			// 把配置文件中配置的需要归档的mongodb表，通过逗号分割为beanname
 			String[] beanNameArray = StringUtils.split(beanNames, ",");
+			// 获取时间区间，用于创建线程条件
 			Map<Date, Date> rangeMap = getRangeDate(4);
+			// 获取线程区间的key（查询的开始时间）
 			Set<Date> keys = rangeMap.keySet();
-			// 初始化查询条件
+			// 循环处理归档表
+			ArchivePublicObject archivePublicObject = new ArchivePublicObject();
 			for (String beanName : beanNameArray) {
+				// 循环时间区间创建执行线程
 				for (Date startTime : keys) {
+					totalThreadCount++;
 					ArchiveProcessThread archiveProcessThread = new ArchiveProcessThread(beanName,
-							customMongoRepository, startTime, rangeMap.get(startTime), jpaArchiveHistoryRepository);
+							customMongoRepository, startTime, rangeMap.get(startTime), jpaArchiveHistoryRepository,
+							redisService, archivePublicObject, time);
 					archiveProcessThread.start();
 				}
 			}
+			archivePublicObject.setTotalThreadCount(totalThreadCount);
 			log.info("archive end , {}", System.currentTimeMillis());
 		} catch (ConstraintViolationException cve) {
 			log.error("has an error,{}", cve);
@@ -65,6 +78,13 @@ public class Customer {
 		}
 	}
 
+	/**
+	 * 根据参数分割一天为不同的时间区间
+	 * 
+	 * @param hours
+	 *            以多少小时为一个区间
+	 * @return
+	 */
 	public Map<Date, Date> getRangeDate(int hours) {
 		Map<Date, Date> map = new HashMap<>();
 		try {

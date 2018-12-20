@@ -48,7 +48,6 @@ public class RedisClient {
 
 	/**
 	 * 批量删除对应的value
-	 * 
 	 * @param keys
 	 */
 	public void remove(final String... keys) {
@@ -65,8 +64,7 @@ public class RedisClient {
 
 	/**
 	 * 删除对应的value
-	 * 
-	 * @param key
+	 * @param keys
 	 */
 	public void remove(final Set<String> keys) {
 		Jedis jedis = null;
@@ -83,7 +81,6 @@ public class RedisClient {
 
 	/**
 	 * 删除对应的value
-	 * 
 	 * @param key
 	 */
 	public void remove(final String key) {
@@ -101,8 +98,8 @@ public class RedisClient {
 
 	/**
 	 * 模糊匹配对应key
-	 * 
-	 * @param key
+	 * @param patten
+	 * @return
 	 */
 	public Set<String> keys(final String patten) {
 		Jedis jedis = null;
@@ -118,7 +115,6 @@ public class RedisClient {
 
 	/**
 	 * 判断缓存中是否有对应的value
-	 * 
 	 * @param key
 	 * @return
 	 */
@@ -135,10 +131,10 @@ public class RedisClient {
 
 	/**
 	 * 写入缓存
-	 * 
 	 * @param key
 	 * @param value
 	 * @return
+	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean set(final String key, Object value) throws Exception {
@@ -155,10 +151,11 @@ public class RedisClient {
 
 	/**
 	 * 写入缓存
-	 * 
 	 * @param key
 	 * @param value
+	 * @param expireTime
 	 * @return
+	 * @throws Exception
 	 */
 	public boolean set(final String key, String value, int expireTime) throws Exception {
 		Jedis jedis = null;
@@ -174,10 +171,10 @@ public class RedisClient {
 
 	/**
 	 * 写入缓存Map
-	 * 
 	 * @param key
-	 * @param value
+	 * @param map
 	 * @return
+	 * @throws Exception
 	 */
 	public boolean mSet(final String key, Map<String, String> map) throws Exception {
 		Jedis jedis = null;
@@ -193,10 +190,11 @@ public class RedisClient {
 
 	/**
 	 * 写入缓存Map 设置过期时间
-	 * 
 	 * @param key
-	 * @param value
+	 * @param map
+	 * @param validtime
 	 * @return
+	 * @throws Exception
 	 */
 	public boolean mSet(final String key, Map<String, String> map, int validtime) throws Exception {
 		Jedis jedis = null;
@@ -213,10 +211,10 @@ public class RedisClient {
 
 	/**
 	 * 查询缓存Map
-	 * 
 	 * @param key
-	 * @param value
+	 * @param field
 	 * @return
+	 * @throws Exception
 	 */
 	public List<String> mGet(final String key, String field) throws Exception {
 		Jedis jedis = null;
@@ -231,7 +229,6 @@ public class RedisClient {
 
 	/**
 	 * setnx
-	 * 
 	 * @param key
 	 * @param value
 	 * @return
@@ -249,9 +246,7 @@ public class RedisClient {
 
 	/**
 	 * 获取剩余存活时间（秒）
-	 * 
 	 * @param key
-	 * @param value
 	 * @return
 	 */
 	public Long getTtl(final String key) {
@@ -284,9 +279,9 @@ public class RedisClient {
 
 	/**
 	 * 写入缓存bytes
-	 * 
 	 * @param key
-	 * @param value
+	 * @param list
+	 * @param <T>
 	 * @return
 	 */
 	public <T> boolean setList(final String key, List<T> list) {
@@ -304,9 +299,8 @@ public class RedisClient {
 
 	/**
 	 * 写入缓存Map
-	 * 
 	 * @param key
-	 * @param value
+	 * @param map
 	 * @return
 	 */
 	public boolean setMap(final String key, Map map) {
@@ -323,9 +317,8 @@ public class RedisClient {
 
 	/**
 	 * 读取缓存对象
-	 * 
 	 * @param key
-	 * @param value
+	 * @param <T>
 	 * @return
 	 */
 	public <T> List<T> getList(final String key) {
@@ -342,9 +335,7 @@ public class RedisClient {
 
 	/**
 	 * 读取Map
-	 * 
 	 * @param key
-	 * @param value
 	 * @return
 	 */
 	public Map getMap(final String key) {
@@ -361,10 +352,7 @@ public class RedisClient {
 
 	/**
 	 * 删除
-	 * 
 	 * @param key
-	 * @param value
-	 * @return
 	 */
 	public void del(final String key) {
 		Jedis jedis = null;
@@ -379,9 +367,7 @@ public class RedisClient {
 
 	/**
 	 * 自增序列
-	 * 
 	 * @param key
-	 * @param expireTime
 	 * @return
 	 */
 	public Long incrWithExpire(final String key) {
@@ -391,6 +377,41 @@ public class RedisClient {
 			if (!jedis.exists(key)) {
 				jedis.expire(key, getSecondsNextEarlyMorning());
 			}
+			return jedis.incr(key);
+		} finally {
+			// 返还到连接池
+			jedis.close();
+		}
+	}
+
+	/**
+	 * 自增序列
+	 * @param key
+	 * @return
+	 */
+	public Long incrWithExpireTwoMonth(final String key) {
+		Jedis jedis = null;
+		try {
+			jedis = jedisPool.getResource();
+			if (!jedis.exists(key)) {
+				jedis.expire(key, getTwoMonthNextEarlyMorning());
+			}
+			return jedis.incr(key);
+		} finally {
+			// 返还到连接池
+			jedis.close();
+		}
+	}
+
+	/**
+	 * 自增序列
+	 * @param key
+	 * @return
+	 */
+	public Long incr(final String key) {
+		Jedis jedis = null;
+		try {
+			jedis = jedisPool.getResource();
 			return jedis.incr(key);
 		} finally {
 			// 返还到连接池
@@ -410,23 +431,30 @@ public class RedisClient {
 		Long seconds = (cal.getTimeInMillis() - System.currentTimeMillis()) / 1000;
 		return seconds.intValue();
 	}
+	// 获取当前时间到第五天凌晨的秒数
+		private Integer getTwoMonthNextEarlyMorning() {
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DAY_OF_YEAR, 60);
+			// 坑就在这里
+			cal.set(Calendar.HOUR, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.MILLISECOND, 0);
+			Long seconds = (cal.getTimeInMillis() - System.currentTimeMillis()) / 1000;
+			return seconds.intValue();
+		}
 
 	/**
 	 * 尝试获取分布式锁
-	 * 
-	 * @param jedis
-	 *            Redis客户端
-	 * @param lockKey
-	 *            锁
-	 * @param requestId
-	 *            请求标识
-	 * @param expireTime
-	 *            超期时间
+	 * @param lockKey 锁
+	 * @param requestId 请求标识
+	 * @param expireTime 超期时间
 	 * @return 是否获取成功
 	 */
 	public boolean tryGetDistributedLock(String lockKey, String requestId, int expireTime) {
 		Jedis jedis = null;
 		try {
+			jedis = jedisPool.getResource();
 			String result = jedis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, expireTime);
 			if (LOCK_SUCCESS.equals(result)) {
 				return true;
@@ -442,32 +470,20 @@ public class RedisClient {
 
 	/**
 	 * 释放分布式锁
-	 * 
-	 * @param jedis
-	 *            Redis客户端
-	 * @param lockKey
-	 *            锁
-	 * @param requestId
-	 *            请求标识
+	 * @param lockKey 锁
+	 * @param requestId 请求标识
 	 * @return 是否释放成功
 	 */
-	public boolean releaseDistributedLock(Jedis jedis, String lockKey, String requestId) {
-
+	public boolean releaseDistributedLock(String lockKey, String requestId) {
+		Jedis jedis = jedisPool.getResource();
 		String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 		Object result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
-
 		if (RELEASE_SUCCESS.equals(result)) {
 			return true;
 		}
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @param value
-	 * @return
-	 */
 	public String flush() {
 		Jedis jedis = null;
 		try {

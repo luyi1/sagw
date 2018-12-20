@@ -4,23 +4,28 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Document
 @CompoundIndexes({
 	@CompoundIndex(name="washIndexB",def="{'equipId':1,'timestamp':1,'line':1}")
 })
 public class Wash extends Timeseries{
+	@JsonProperty(value = "LAV_T_MES")
 	public Float getLAV_T_MES() {
 		return LAV_T_MES;
 	}
 	public void setLAV_T_MES(Float lAV_T_MES) {
 		LAV_T_MES = lAV_T_MES;
 	}
+	@JsonProperty(value = "RINC_T_MES")
 	public Float getRINC_T_MES() {
 		return RINC_T_MES;
 	}
 	public void setRINC_T_MES(Float rINC_T_MES) {
 		RINC_T_MES = rINC_T_MES;
 	}
+	@JsonProperty(value = "T_SORT")
 	public Float getT_SORT() {
 		return T_SORT;
 	}

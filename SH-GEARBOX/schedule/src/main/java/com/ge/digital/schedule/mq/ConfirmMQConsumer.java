@@ -112,10 +112,10 @@ public class ConfirmMQConsumer {
 					scheduleTask.setPartNumber(scheduleOrder.getPartNumber());
 					// C. 待排产任务.交付需求时间 = 热后订单.交付需求时间 - 喷丸时间 - 检测时间
 					OtherNeedTime otherNeedTime = map.get(scheduleTask.getPartNumber());
-					long otherTime = otherNeedTime.getInspectionTime() + otherNeedTime.getShotPeeningTime();
+					long otherTime = otherNeedTime.getInspectionTime() + otherNeedTime.getShotPeeningTime()*1000;
 					scheduleTask.setScheduleEndTime(new Date(scheduleOrder.getFinishDate().getTime() - otherTime));
 					scheduleTask.setScheduleStatus(ScheduleStatusEnum.NORMAL.getCode());
-					scheduleTask.setTaskNo(scheduleTaskService.getTaskNo());
+					scheduleTask.setTaskNo(scheduleTaskService.getTaskNo(scheduleOrder.getScheduleOrderNo()));
 					scheduleTasks.add(scheduleTask);
 					redisService.setTasks(scheduleTasks, scheduleOrder.getScheduleOrderNo());
 					// 3.2.3. 将【3.2.2】中生成的待排产任务插入【排产任务Ps输入】表
@@ -138,6 +138,7 @@ public class ConfirmMQConsumer {
 				@Override
 				public Boolean call() throws Exception {
 					// TODO Auto-generated method stub
+					// 调用PlantSimulation的仿真模拟接口
 					boolean bool = true;// plantSimulationService.invoke();
 					if (bool) {
 						// 模拟排产结果输出
@@ -156,8 +157,7 @@ public class ConfirmMQConsumer {
 			};
 			ExecutorService executorService = Executors.newFixedThreadPool(1);
 			future = executorService.submit(call);
-			future.get(plantSimulationTimeout, TimeUnit.MILLISECONDS);
-
+			Boolean psInvokeResult = future.get(plantSimulationTimeout, TimeUnit.MILLISECONDS);
 			// 3.3.1. 调用WIP的热前零件库存信息接口取得待排产订单所需求的各零件的热前立库库存信息。
 			List<String> partNumbers = new ArrayList<>();
 			for (ScheduleOrder scheduleOrder : orders) {
@@ -192,7 +192,7 @@ public class ConfirmMQConsumer {
 					ScheduleTaskVO vo = new ScheduleTaskVO();
 					// 热后额外时间
 					OtherNeedTime otherNeedTime = map.get(scheduleTaskPSOut.getPartNumber());
-					long afterOtherTime = otherNeedTime.getInspectionTime() + otherNeedTime.getShotPeeningTime();
+					long afterOtherTime = otherNeedTime.getInspectionTime()*1000 + otherNeedTime.getShotPeeningTime()*1000;
 					vo.setPartNumber(scheduleTaskPSOut.getPartNumber());
 					vo.setTaskNo(scheduleTaskPSOut.getTaskNo());
 					vo.setNeedFinishTime(DateUtils.formatDate(scheduleOrder.getFinishDate(), "yyyy/MM/dd HH:mm:ss"));

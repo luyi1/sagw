@@ -4,15 +4,18 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Document
 @CompoundIndexes({
 	@CompoundIndex(name="c2h2IndexB",def="{'equipId':1,'timestamp':1,'line':1}")
 })
 public class C2H2 extends Timeseries{
-
+	
 	private String C2H2_flow;
+	
 	private String C2H2_pressure;
-
+	@JsonProperty(value = "C2H2_flow")
 	public String getC2H2_flow() {
 		return C2H2_flow;
 	}
@@ -20,7 +23,7 @@ public class C2H2 extends Timeseries{
 	public void setC2H2_flow(String c2h2_flow) {
 		C2H2_flow = c2h2_flow;
 	}
-
+	@JsonProperty(value = "C2H2_pressure")
 	public String getC2H2_pressure() {
 		return C2H2_pressure;
 	}

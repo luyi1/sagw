@@ -3,6 +3,9 @@ package com.ge.digital.gearbox.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,9 +46,14 @@ import com.ge.digital.gearbox.mapper.MongoWIPExchangeRepository;
 import com.ge.digital.gearbox.mapper.MongoWarningErrorEventRepository;
 import com.ge.digital.gearbox.mapper.MongoWashRepository;
 import com.ge.digital.gearbox.service.DataStoreService;
+import com.ge.digital.gearbox.service.ProductionProcService;
+import com.ge.digital.gearbox.util.CopyUtil;
 
 @Service
 public class DataStoreServiceImpl implements DataStoreService {
+	
+	private static final Logger log = LoggerFactory.getLogger(DataStoreServiceImpl.class);
+
 	@Autowired
 	MongoCcfRepository mongoCcfRepository;
 	@Autowired
@@ -88,6 +96,8 @@ public class DataStoreServiceImpl implements DataStoreService {
 	MongoReciptParameterRepository mongoRecipeParameterRepository;
 	@Autowired
 	MongoSynRecipeRepository mongoSynRecipeRepository;
+	@Autowired
+	ProductionProcService productionProcService;
 	@Override
 	public boolean addCff(Ccf ccf) {
 		mongoCcfRepository.insert(ccf);
@@ -124,15 +134,24 @@ public class DataStoreServiceImpl implements DataStoreService {
 		return true;
 	}
 
+	@Autowired
+	RabbitTemplate rabbitTemplate;
+
 	@Override
 	public boolean attchProdProc(ProductionProc pp) {
-		List<ProductionProc> procs = mongoProdProcRepository.findByloadNumber(pp.getLoadNumber());
-		if (procs != null && !procs.isEmpty()) {
-			ProductionProc proc = procs.get(0);
-			updateProcFrompp(pp, proc);
-			mongoProdProcRepository.save(proc);
+		log.info("Proc 插入/更新:"+pp.toString());
+		ProductionProc proc = productionProcService.findByLoadNumber(pp.getLoadNumber());
+		if (proc != null ) {
+			CopyUtil.copyProperties(pp, proc);
+			productionProcService.update(proc);
 		} else {
-			mongoProdProcRepository.insert(pp);
+			productionProcService.save(pp);
+		}
+		try {
+			rabbitTemplate.convertAndSend("integeration.attachProc.event", pp);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return true;
 	}
@@ -145,37 +164,37 @@ public class DataStoreServiceImpl implements DataStoreService {
 
 	@Override
 	public List<Ccf> findCcf(String equipId, Date start, Date end, String lineNum) {
-		List<Ccf> ccfs = mongoCcfRepository.findCCFByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<Ccf> ccfs = mongoCcfRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return ccfs;
 	}
 
 	@Override
 	public List<Ctg> findCtg(String equipId, Date start, Date end, String lineNum) {
-		List<Ctg> ctgs = mongoCtgRepository.findCtgByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<Ctg> ctgs = mongoCtgRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return ctgs;
 	}
 
 	@Override
 	public List<Preox> findPreox(String equipId, Date start, Date end, String lineNum) {
-		List<Preox> preoxs = mongoPreoxRepository.findPreoxByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<Preox> preoxs = mongoPreoxRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return preoxs;
 	}
 
 	@Override
 	public List<Temper> findTemper(String equipId, Date start, Date end, String lineNum) {
-		List<Temper> tempers = mongoTemperRepository.findTemperByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<Temper> tempers = mongoTemperRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return tempers;
 	}
 
 	@Override
 	public List<Tunnel> findTunnel(String equipId, Date start, Date end, String lineNum) {
-		List<Tunnel> tunnels = mongoTunnelRepository.findTunnelByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<Tunnel> tunnels = mongoTunnelRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return tunnels;
 	}
 
 	@Override
 	public List<Wash> findWash(String equipId, Date start, Date end, String lineNum) {
-		List<Wash> washs = mongoWashRepository.findWashByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<Wash> washs = mongoWashRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return washs;
 	}
 
@@ -183,11 +202,28 @@ public class DataStoreServiceImpl implements DataStoreService {
 		if (pp.getEventCode() != null) {
 			proc.setEventCode(pp.getEventCode());
 		}
+		if (pp.getCoolingNumber()!=null)
+		{
+			proc.setCoolingNumber(pp.getCoolingNumber());
+		}
+		if (pp.getCoolingEntryDate()!=null)
+		{
+			proc.setCoolingEntryDate(pp.getCoolingEntryDate());
+		}
+		if (pp.getCoolingExitDate()!=null)
+		{
+			proc.setCoolingExitDate(pp.getCoolingExitDate());
+		}
 		if (pp.getHeatingEntryDate() != null) {
 			proc.setHeatingEntryDate(pp.getHeatingEntryDate());
 		}
 		if (pp.getHeatingExitDate() != null) {
 			proc.setHeatingExitDate(pp.getHeatingExitDate());
+		}
+		
+		if(pp.getiCBPNumber()!=null)
+		{
+			proc.setiCBPNumber(pp.getiCBPNumber());
 		}
 		if (pp.getiCBPEntryDate() != null) {
 			proc.setiCBPEntryDate(pp.getiCBPEntryDate());
@@ -222,6 +258,9 @@ public class DataStoreServiceImpl implements DataStoreService {
 		}
 		if (pp.getPreHeatingNumber() != null) {
 			proc.setPreHeatingNumber(pp.getPreHeatingNumber());
+		}
+		if (pp.getQuenchingNumber() != null) {
+			proc.setQuenchingNumber(pp.getQuenchingNumber());
 		}
 		if (pp.getQuenchingEntryDate() != null) {
 			proc.setQuenchingEntryDate(pp.getQuenchingEntryDate());
@@ -275,19 +314,19 @@ public class DataStoreServiceImpl implements DataStoreService {
 
 	@Override
 	public List<C2H2> findC2H2(String equipId, Date start, Date end, String lineNum) {
-		List<C2H2> c2h2s = mongoC2H2Repository.findC2H2ByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<C2H2> c2h2s = mongoC2H2Repository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return c2h2s;
 	}
 
 	@Override
 	public List<ExCar> findExCar(String equipId, Date start, Date end, String lineNum) {
-		List<ExCar> exCars = mongoExCarRepository.findExCarByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<ExCar> exCars = mongoExCarRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return exCars;
 	}
 
 	@Override
 	public List<InCar> findInCar(String equipId, Date start, Date end, String lineNum) {
-		List<InCar> inCars = mongoInCarRepository.findInCarByEuipIdAndTimeRange(equipId, start, end, lineNum);
+		List<InCar> inCars = mongoInCarRepository.findByEquipIdAndTimestampBetweenAndLine(equipId, start, end, lineNum);
 		return inCars;
 	}
 
@@ -353,5 +392,10 @@ public class DataStoreServiceImpl implements DataStoreService {
 	public boolean addSynRecipe(SynRecipe synRecipe) {
 		mongoSynRecipeRepository.insert(synRecipe);
 		return true;
+	}
+
+	@Override
+	public List<ELineStatus> findELineStatus(Date start, Date end, String lineNum) {
+		return mongoELineStatusRepository.findByTimestampBetweenAndLine(start,end,lineNum);
 	}
 }

@@ -6,7 +6,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ma_Processlineinfo")
 public class ProcessLineInfo extends ModelBase {
-	String partNumber;
+	String heatingOutCode;
+	Integer quantityPerCharge;
 	Boolean line1;
 	Boolean line2;
 	Boolean line3;
@@ -18,17 +19,25 @@ public class ProcessLineInfo extends ModelBase {
 	Integer line4PriorityLevel;
 	Integer line5PriorityLevel;
 
-	@Column(name = "partnumber")
-	public String getPartNumber() {
-		return partNumber;
+	@Column(name = "heatingoutcode")
+	public String getHeatingOutCode() {
+		return heatingOutCode;
 	}
 
-	public void setPartNumber(String partNumber) {
-		this.partNumber = partNumber;
+	public void setHeatingOutCode(String heatingOutCode) {
+		this.heatingOutCode = heatingOutCode;
+	}
+	@Column(name = "quantitypercharge")
+	public Integer getQuantityPerCharge() {
+		return quantityPerCharge;
+	}
+
+	public void setQuantityPerCharge(Integer quantityPerCharge) {
+		this.quantityPerCharge = quantityPerCharge;
 	}
 
 	@Column(name = "line1")
-	public boolean isLine1() {
+	public Boolean getLine1() {
 		return line1;
 	}
 
@@ -37,7 +46,7 @@ public class ProcessLineInfo extends ModelBase {
 	}
 
 	@Column(name = "line2")
-	public boolean isLine2() {
+	public Boolean getLine2() {
 		return line2;
 	}
 
@@ -46,7 +55,7 @@ public class ProcessLineInfo extends ModelBase {
 	}
 
 	@Column(name = "line3")
-	public boolean isLine3() {
+	public Boolean getLine3() {
 		return line3;
 	}
 
@@ -55,7 +64,7 @@ public class ProcessLineInfo extends ModelBase {
 	}
 
 	@Column(name = "line4")
-	public boolean isLine4() {
+	public Boolean getLine4() {
 		return line4;
 	}
 
@@ -64,7 +73,7 @@ public class ProcessLineInfo extends ModelBase {
 	}
 
 	@Column(name = "line5")
-	public boolean isLine5() {
+	public Boolean getLine5() {
 		return line5;
 	}
 

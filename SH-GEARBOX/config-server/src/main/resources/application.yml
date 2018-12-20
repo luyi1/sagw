@@ -1,7 +1,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8886/eureka/,http://localhost:8887/eureka/
+      defaultZone: http://10.1.5.193:8761/eureka/,http://10.1.5.193:8762/eureka/
     fetchRegistry: true
   instance:
     prefer-ip-address: true 
@@ -18,7 +18,7 @@ spring:
           search-paths: config-repo
           username: smluyi@163.com
           password: P@ssw0rd60
-    label: master
+    label: dev
 #uri: git@github.build.ge.com:GED-PS/SPO.git
 #          search-paths: config-repo
 #          username: yi.lu12@ge.com

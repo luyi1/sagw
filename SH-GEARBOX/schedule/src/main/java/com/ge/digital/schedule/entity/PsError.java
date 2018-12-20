@@ -8,9 +8,9 @@ import javax.persistence.Table;
 @Table(name = "sh_pserror")
 public class PsError extends ModelBase {
 
-	@Column(name = "errormessage")
+	
 	String errorMessage;
-
+	@Column(name = "errormessage")
 	public String getErrorMessage() {
 		return errorMessage;
 	}

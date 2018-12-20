@@ -1,8 +1,8 @@
 package com.ge.digital.schedule.aop;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,7 +34,7 @@ public class MasterDataAscept {
 
 	}
 
-	@Before("saveMasterDataPointcut()")
+	@After("saveMasterDataPointcut()")
 	public void afterSaveMasterData(JoinPoint joinPoint) {
 		Object[] args = joinPoint.getArgs();
 		String type = (String) args[1];

@@ -6,21 +6,31 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.ge.digital.schedule.entity.ModelBase;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "sh_inprocessingtask")
 public class InProcessingTask extends ModelBase {
 
-	@Column(name = "taskno")
+	
 	String taskNo;
-	@Column(name = "partnumber")
+	
 	String partNumber;
-	@Column(name = "line")
+	
 	String line;
-	@Column(name = "taskstarttime")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	Date taskStartTime;
+	
+	String reworkBatch;
+	@Column(name = "reworkbatch")
+	public String getReworkBatch() {
+		return reworkBatch;
+	}
 
+	public void setReworkBatch(String reworkBatch) {
+		this.reworkBatch = reworkBatch;
+	}
+	@Column(name = "taskno")
 	public String getTaskNo() {
 		return taskNo;
 	}
@@ -28,7 +38,7 @@ public class InProcessingTask extends ModelBase {
 	public void setTaskNo(String taskNo) {
 		this.taskNo = taskNo;
 	}
-
+	@Column(name = "partnumber")
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -36,7 +46,7 @@ public class InProcessingTask extends ModelBase {
 	public void setPartNumber(String partNumber) {
 		this.partNumber = partNumber;
 	}
-
+	@Column(name = "line")
 	public String getLine() {
 		return line;
 	}
@@ -44,7 +54,7 @@ public class InProcessingTask extends ModelBase {
 	public void setLine(String line) {
 		this.line = line;
 	}
-
+	@Column(name = "taskstarttime")
 	public Date getTaskStartTime() {
 		return taskStartTime;
 	}

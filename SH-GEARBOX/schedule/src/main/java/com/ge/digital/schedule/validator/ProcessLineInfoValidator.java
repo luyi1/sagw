@@ -41,8 +41,9 @@ public class ProcessLineInfoValidator implements MasterDataValidatorI<LineBuffer
 			if (keyCount != null && keyCount > 1) {
 				excelObj.addError(I18NHelper.getI18NErrorMsg(RestResponseCode.UPLOAD_RECORD_ALREADY_EXIST));
 			}
+			ProcessLineInfoExcelSupport plExcel = (ProcessLineInfoExcelSupport)excelObj;
 			List<ProcessLineInfo> processLineInfos =
-					procssLineInfoRepository.findByPartNumber(excelObj.getCombinedKey());
+					procssLineInfoRepository.findByHeatingOutCodeAndQuantityPerCharge(plExcel.getHeatingOutCode(),plExcel.getQuantityPerCharge());
 			if (!processLineInfos.isEmpty()) {
 				excelObj.setId(processLineInfos.get(0).getId());
 			}
@@ -56,9 +57,10 @@ public class ProcessLineInfoValidator implements MasterDataValidatorI<LineBuffer
 
 		for (Object object : list) {
 			ProcessLineInfoExcelSupport processLineInfo = (ProcessLineInfoExcelSupport) object;
-			List<ProcessLineInfo> lineBuffers = procssLineInfoRepository.findByPartNumber(processLineInfo.getCombinedKey());
-			if (!lineBuffers.isEmpty()) {
-				processLineInfo.setId(lineBuffers.stream().findAny().get().getId());
+			List<ProcessLineInfo> processLineInfos =
+					procssLineInfoRepository.findByHeatingOutCodeAndQuantityPerCharge(processLineInfo.getHeatingOutCode(),processLineInfo.getQuantityPerCharge());
+			if (!processLineInfos.isEmpty()) {
+				processLineInfo.setId(processLineInfos.stream().findAny().get().getId());
 				deletelist.add(processLineInfo);
 			}
 		}

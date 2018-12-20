@@ -6,17 +6,32 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "sh_Lineworkstationsstatus")
 public class LineWorkstationsStatus extends ModelBase {
 
 	String station;
-	boolean usability;
-	boolean haveMateriel;
+	Boolean usability;
+	Boolean haveMateriel;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	Date materielIntotime;
+	String taskNo;
 	String partNumber;
 	String line;
+	@JsonProperty(value = "oPNo")
 	String opNo;
+	
+	@Column(name = "taskno")
+	public String getTaskNo() {
+		return taskNo;
+	}
+
+	public void setTaskNo(String taskNo) {
+		this.taskNo = taskNo;
+	}
 
 	@Column(name = "station")
 	public String getStation() {
@@ -32,7 +47,7 @@ public class LineWorkstationsStatus extends ModelBase {
 		return usability;
 	}
 
-	public void setUsability(boolean usability) {
+	public void setUsability(Boolean usability) {
 		this.usability = usability;
 	}
 
@@ -41,7 +56,7 @@ public class LineWorkstationsStatus extends ModelBase {
 		return haveMateriel;
 	}
 
-	public void setHaveMateriel(boolean haveMateriel) {
+	public void setHaveMateriel(Boolean haveMateriel) {
 		this.haveMateriel = haveMateriel;
 	}
 

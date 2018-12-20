@@ -4,3 +4,27 @@ eureka:
     fetchRegistry: true
   instance:
     prefer-ip-address: true
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 150000
+ribbon:
+  ReadTimeout: 150000
+  ConnectTimeout: 150000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  eureka:
+    enabled: false
+
+zuul:
+  max:
+    host:
+      connections: 500
+  host:
+    socket-timeout-millis: 150000
+    connect-timeout-millis: 150000

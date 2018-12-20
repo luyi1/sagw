@@ -1,5 +1,7 @@
 package com.ge.digital.schedule.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,10 @@ public class ScheduleTaskPSInService {
 		scheduleTaskPSInRepository.save(scheduleTaskPsIn);
 	}
 
+	public void save(List<ScheduleTaskPsIn> scheduleTaskPsIns) {
+		scheduleTaskPSInRepository.save(scheduleTaskPsIns);
+	}
+	
 	public void deleteAll() {
 		scheduleTaskPSInRepository.deleteAll();
 	}

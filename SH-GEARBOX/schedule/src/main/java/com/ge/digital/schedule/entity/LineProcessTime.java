@@ -9,12 +9,22 @@ import javax.persistence.Table;
 public class LineProcessTime extends ModelBase {
 
 	String partNumber;
+	String line;
 	Long OP10;
 	Long OP20;
 	Long OP30;
 	Long OP40;
 	Long OP50;
 	Long OP60;
+
+	@Column(name = "line")
+	public String getLine() {
+		return line;
+	}
+
+	public void setLine(String line) {
+		this.line = line;
+	}
 
 	@Column(name = "partnumber")
 	public String getPartNumber() {

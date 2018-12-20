@@ -43,14 +43,14 @@ public class WorkstationsNumValidator implements MasterDataValidatorI<Workstatio
 			if (keyCount != null && keyCount > 1) {
 				excelObj.addError(I18NHelper.getI18NErrorMsg(RestResponseCode.UPLOAD_RECORD_ALREADY_EXIST));
 			}
-			List<Line> lines = lineRepository.findByLine(excelObj.getCombinedKey());
-			Long lineId = -1l;
-			if (!lines.isEmpty()) {
-				lineId = lines.get(0).getId();
-			}else{
-				excelObj.addError(I18NHelper.getI18NErrorMsg(RestResponseCode.LINE_NOT_EXIST));
-			}
-			((WorkstationNumExcelSupport)excelObj).setLine(lineId.toString());
+//			List<Line> lines = lineRepository.findByLine(excelObj.getCombinedKey());
+//			Long lineId = -1l;
+//			if (!lines.isEmpty()) {
+//				lineId = lines.get(0).getId();
+//			}else{
+//				excelObj.addError(I18NHelper.getI18NErrorMsg(RestResponseCode.LINE_NOT_EXIST));
+//			}
+//			((WorkstationNumExcelSupport)excelObj).setLine(lineId.toString());
 			List<WorkstationsNum> workStations = workstationsNumRepository.findViaLineID(excelObj.getCombinedKey());
 			if (!workStations.isEmpty()) {
 				excelObj.setId(workStations.get(0).getId());
@@ -70,7 +70,7 @@ public class WorkstationsNumValidator implements MasterDataValidatorI<Workstatio
 //			if (!lines.isEmpty()) {
 //				lineId = lines.get(0).getId();
 //			}
-			List<WorkstationsNum> workStations = workstationsNumRepository.findViaLineID(excelObj.getCombinedKey());
+			List<WorkstationsNum> workStations = workstationsNumRepository.findViaLineID(excelObj.getLine());
 			if (!workStations.isEmpty()) {
 				excelObj.setId(workStations.stream().findAny().get().getId());
 				deletelist.add(excelObj);

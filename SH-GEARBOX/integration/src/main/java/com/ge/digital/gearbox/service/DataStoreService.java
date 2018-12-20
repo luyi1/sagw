@@ -76,7 +76,7 @@ public interface DataStoreService {
 
 	List<InCar> findInCar(String equipId, Date start, Date end, String lineNum);
 
-	
+	List<ELineStatus> findELineStatus(Date start, Date end, String lineNum);
 	boolean addExCar(ExCar exCar);
 
 	boolean addInCar(InCar inCar);

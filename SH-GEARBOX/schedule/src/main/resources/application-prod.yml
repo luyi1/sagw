@@ -1,5 +1,22 @@
+server:
+  port: 80
+  max-http-header-size: 10000000
 debug: true
+eureka:
+  client:
+    serviceUrl:
+       defaultZone: @eureka_ip1@,@eureka_ip2@
+  instance:
+    prefer-ip-address: true
 spring:
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: GMT+8
+  mail:
+    host: smtp.sina.com
+    port: 25
+    username: jesse_ji521@sina.com
+    password: jesse.ji237
   thymeleaf:
     prefix: classpath:/thymeleaf/
     suffix: .html
@@ -8,7 +25,7 @@ spring:
     content-type: text/html
     cache: false
   datasource:
-    url: jdbc:sqlserver://10.1.5.190:1433;DatabaseName=soadb
+    url: @sqlserver_url@
     username: sa
     password: Qazx1234
     initialSize: 5
@@ -31,9 +48,9 @@ spring:
     database: 0
     host: 10.1.5.193
     port: 6379
-    password: null
-    timeout: 0
+    password: 
     pool:
+      timeout: 0
       max-active: -1
       max-wait: -1
       max-idle: -1
@@ -41,7 +58,7 @@ spring:
   application:
     name: schedule
   rabbitmq:
-    host: localhost
+    host: 10.1.5.193
     port: 5672
     username: guest
     password: guest
@@ -53,17 +70,21 @@ custom:
       connection-request-timeout: 30000
       connect-timeout: 30000
       read-timeout: 30000
+  email:
+     to: smluyi@163.com,yi.lu12@ge.com
+     stock:
+       threadshold: 5
   plantsimulation:
     database:
-      timeout: 60000
-    url: http://127.0.0.1:8081/invoke
+      timeout: 120000
+    url: @plantsimulation_url@
     serverkey: schedule-ps
   wip:
     url:
       fetchnewworkstationstatus: http://127.0.0.1/fetchWorkstationsStatus
       fetchmaterielbypartnumbers: http://127.0.0.1/fetchMaterielByPartNumbers
       fetchdeviceandline: http://127.0.0.1/fetchDeviceAndLine
-      submit: http://127.0.0.1/takeOrder
+      submit: http://10.1.5.193:8085/wip/schedule/takeOrder
   mq:
     masterdatacheck: schedule.request.masterdatacheck
     deviceandlinecheck: schedule.request.deviceandlinecheck

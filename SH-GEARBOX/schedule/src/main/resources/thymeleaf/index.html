@@ -22,8 +22,27 @@
 <script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script type="text/javascript">
+var ws = new WebSocket("ws://localhost/websocket");
+
+ws.onopen = function()
+{
+   // Web Socket 已连接上，使用 send() 方法发送数据
+   ws.send("发送数据");
+   alert("数据发送中...");
+};
+ws.onmessage = function (evt) 
+{ 
+   var received_msg = evt.data;
+   alert("数据已接收...");
+};
+ 
+ws.onclose = function()
+{ 
+   // 关闭 websocket
+   alert("连接已关闭..."); 
+};
 	// 建立连接对象（还未发起连接）
-	var socket = new SockJS("http://localhost/webSocketServer");
+	var socket = new SockJS("http://localhost:8083/quality");
 
 	// 获取 STOMP 子协议的客户端对象
 	var stompClient = Stomp.over(socket);
@@ -39,46 +58,47 @@
 					+ returnData.responseMessage);
 		});
 	}, function errorCallBack(error) {
+		alert(error)
 		// 连接失败时（服务器响应 ERROR 帧）的回调方法
 		setMessageInnerHTML("连接失败");
 	});
 
-	//发送消息
-	function send() {
-		var message = document.getElementById('text').value;
-		var messageJson = JSON.stringify({
-			"name" : message
-		});
-		stompClient.send("/websocket/sendTest", {}, messageJson);
-	}
+// 	//发送消息
+// 	function send() {
+// 		var message = document.getElementById('text').value;
+// 		var messageJson = JSON.stringify({
+// 			"name" : message
+// 		});
+// 		stompClient.send("/websocket/sendTest", {}, messageJson);
+// 	}
 
-	//订阅消息
-	function subscribe1() {
-		stompClient.subscribe('/topic/confirmrun', function(response) {
-			var body = response.body;
-			var returnData = JSON.parse(body);
-			setMessageInnerHTML("/topic/confirmrun 你接收到的消息为:" + body);
-		});
-	}
+// 	//订阅消息
+// 	function subscribe1() {
+// 		stompClient.subscribe('/topic/confirmrun', function(response) {
+// 			var body = response.body;
+// 			var returnData = JSON.parse(body);
+// 			setMessageInnerHTML("/topic/confirmrun 你接收到的消息为:" + body);
+// 		});
+// 	}
 
-	//订阅消息
-	function subscribe2() {
-		stompClient.subscribe('/topic/sendTest', function(response) {
-			setMessageInnerHTML("已成功订阅/topic/sendTest");
-			var returnData = JSON.parse(response.body);
-			setMessageInnerHTML("/topic/sendTest 你接收到的消息为:"
-					+ returnData.responseMessage);
-		});
-	}
+// 	//订阅消息
+// 	function subscribe2() {
+// 		stompClient.subscribe('/topic/sendTest', function(response) {
+// 			setMessageInnerHTML("已成功订阅/topic/sendTest");
+// 			var returnData = JSON.parse(response.body);
+// 			setMessageInnerHTML("/topic/sendTest 你接收到的消息为:"
+// 					+ returnData.responseMessage);
+// 		});
+// 	}
 
-	//将消息显示在网页上
-	function setMessageInnerHTML(innerHTML) {
-		document.getElementById('message').innerHTML += innerHTML + '<br/>';
-	}
+// 	//将消息显示在网页上
+// 	function setMessageInnerHTML(innerHTML) {
+// 		document.getElementById('message').innerHTML += innerHTML + '<br/>';
+// 	}
 
-	function closeWebSocket() {
-		stompClient.disconnect();
-	}
+// 	function closeWebSocket() {
+// 		stompClient.disconnect();
+// 	}
 </script>
 
 </html>

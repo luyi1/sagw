@@ -74,11 +74,11 @@ public class MockService {
 
 	String randomLine() {
 		String[] lines = new String[5];
-		lines[0] = "Line1";
-		lines[1] = "Line2";
-		lines[2] = "Line3";
-		lines[3] = "Line4";
-		lines[4] = "Line5";
+		lines[0] = "ECM1";
+		lines[1] = "ECM2";
+		lines[2] = "ECM3";
+		lines[3] = "ECM4";
+		lines[4] = "ECM5";
 		int index = RandomUtils.nextInt(0, 4);
 		return lines[index];
 	}

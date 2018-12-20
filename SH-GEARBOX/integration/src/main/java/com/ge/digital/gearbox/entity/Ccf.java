@@ -4,43 +4,51 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Document
 @CompoundIndexes({
 	@CompoundIndex(name="ccfIndexB",def="{'equipId':1,'timestamp':1,'line':1}")
 })
 public class Ccf extends Timeseries{
-	
+
 	private Float DEB_ACE;
+	@JsonProperty(value = "DEB_ACE")
 	public Float getDEB_ACE() {
 		return DEB_ACE;
 	}
 	public void setDEB_ACE(Float dEB_ACE) {
 		DEB_ACE = dEB_ACE;
 	}
+	@JsonProperty(value = "DEB_AZO")
 	public Float getDEB_AZO() {
 		return DEB_AZO;
 	}
 	public void setDEB_AZO(Float dEB_AZO) {
 		DEB_AZO = dEB_AZO;
 	}
+	@JsonProperty(value = "P_GAZS")
 	public Float getP_GAZS() {
 		return P_GAZS;
 	}
 	public void setP_GAZS(Float p_GAZS) {
 		P_GAZS = p_GAZS;
 	}
+	@JsonProperty(value = "T_CONS")
 	public Float getT_CONS() {
 		return T_CONS;
 	}
 	public void setT_CONS(Float t_CONS) {
 		T_CONS = t_CONS;
 	}
+	@JsonProperty(value = "T_MES")
 	public Float getT_MES() {
 		return T_MES;
 	}
 	public void setT_MES(Float t_MES) {
 		T_MES = t_MES;
 	}
+	@JsonProperty(value = "T_SORT")
 	public Float getT_SORT() {
 		return T_SORT;
 	}

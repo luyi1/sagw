@@ -22,21 +22,21 @@ public class PlantSimulationController {
 	@GetMapping("invoke")
 	public Map<String, String> invoke(String timestemp, String sign) {
 		String localKey = "schedule-ps";
-		String md5 = encoderByMd5(timestemp + localKey);
+//		String md5 = encoderByMd5(timestemp + localKey);
 		Map<String, String> result = new HashMap<>();
 		try {
-			if (!md5.equals(sign)) {
-				result.put("code", "xxxxx");
-				result.put("msg", "fail");
-				return result;
-			}
+//			if (!md5.equals(sign)) {
+//				result.put("code", "xxxxx");
+//				result.put("msg", "fail");
+//				return result;
+//			}
 			plantSimulationService.invokeByCom();
-			result.put("code", "00000");
-			result.put("msg", "");
+			result.put("resCode", "00000");
+			result.put("resMsg", "");
 		} catch (Exception e) {
 			// TODO: handle exception
-			result.put("code", "11111");
-			result.put("msg", e.getMessage());
+			result.put("resCode", "11111");
+			result.put("resMsg", e.getMessage());
 		}
 		log.info("invoke :{}", result);
 		return result;

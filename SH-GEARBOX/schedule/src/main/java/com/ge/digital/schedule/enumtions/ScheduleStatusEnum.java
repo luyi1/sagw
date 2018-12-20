@@ -2,7 +2,7 @@ package com.ge.digital.schedule.enumtions;
 
 public enum ScheduleStatusEnum {
 
-	NORMAL("01"), RESET("02"), CANCEL("03"), INSERT("04"), REWORK("05");
+	NORMAL("1"), RESET("2"), CANCEL("3"), INSERT("4"), REWORK("5");
 	private ScheduleStatusEnum(String code) {
 		this.code = code;
 	}

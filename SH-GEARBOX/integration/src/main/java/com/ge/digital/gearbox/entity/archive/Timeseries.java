@@ -11,8 +11,8 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class Timeseries {
 
-	@Column(name = "euipid")
-	String euipId;
+	@Column(name = "equipid")
+	String equipId;
 	@Column(name = "line")
 	String line;
 	@Id
@@ -51,12 +51,12 @@ public class Timeseries {
 		this.plusData3 = plusData3;
 	}
 
-	public String getEuipId() {
-		return euipId;
+	public String getEquipId() {
+		return equipId;
 	}
 
-	public void setEuipId(String euipId) {
-		this.euipId = euipId;
+	public void setEuipId(String equipId) {
+		this.equipId = equipId;
 	}
 
 	public Date getTimestamp() {

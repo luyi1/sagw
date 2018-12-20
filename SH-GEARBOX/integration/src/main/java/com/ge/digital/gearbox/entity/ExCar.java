@@ -4,6 +4,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Document
 @CompoundIndexes({
 	@CompoundIndex(name="c2h2IndexB",def="{'equipId':1,'timestamp':1,'line':1}")
@@ -11,12 +13,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ExCar extends Timeseries{
 	private String POS_ENFOUR;
 	private String POS_TRANS;
+	@JsonProperty(value = "POS_ENFOUR")
 	public String getPOS_ENFOUR() {
 		return POS_ENFOUR;
 	}
 	public void setPOS_ENFOUR(String pOS_ENFOUR) {
 		POS_ENFOUR = pOS_ENFOUR;
 	}
+	@JsonProperty(value = "POS_TRANS")
 	public String getPOS_TRANS() {
 		return POS_TRANS;
 	}

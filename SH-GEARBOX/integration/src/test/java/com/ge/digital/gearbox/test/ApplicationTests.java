@@ -83,36 +83,36 @@
 //	@Autowired
 //	MongoProductionProcRepository mongoProdProcRepository;
 //
-//	@Test
+////	@Test
 //	public void test() throws Exception {
 //		long before=System.currentTimeMillis();
-//		List<ProductionProc> procs = mongoProductionProcRepository.findByloadNumber("1018500");
+////		List<ProductionProc> procs = mongoProductionProcRepository.findByloadNumber("1018500");
 //		long after=System.currentTimeMillis();
 //		System.out.println(after-before);
 //	}
-// 
+//	@Test
 //	public void basicData() throws Exception {
-//		SaveDateThread saveDateThread1 = new SaveDateThread(mongoC2H2Repository, 1);
+//		SaveDateThread saveDateThread1 = new SaveDateThread(mongoC2H2Repository, 1,"c2h2");
 //		saveDateThread1.start();
-//		SaveDateThread saveDateThread2 = new SaveDateThread(mongoCcfRepository, 2);
+//		SaveDateThread saveDateThread2 = new SaveDateThread(mongoCcfRepository, 2,"ccf");
 //		saveDateThread2.start();
-//		SaveDateThread saveDateThread3 = new SaveDateThread(mongoCtgRepository, 3);
+//		SaveDateThread saveDateThread3 = new SaveDateThread(mongoCtgRepository, 3,"ctg");
 //		saveDateThread3.start();
-//		SaveDateThread saveDateThread4 = new SaveDateThread(mongoExCarRepository, 4);
+//		SaveDateThread saveDateThread4 = new SaveDateThread(mongoExCarRepository, 4,"excar");
 //		saveDateThread4.start();
-//		SaveDateThread saveDateThread5 = new SaveDateThread(mongoInCarRepository, 5);
+//		SaveDateThread saveDateThread5 = new SaveDateThread(mongoInCarRepository, 5,"in car");
 //		saveDateThread5.start();
-//		SaveDateThread saveDateThread6 = new SaveDateThread(mongoPreoxRepository, 6);
+//		SaveDateThread saveDateThread6 = new SaveDateThread(mongoPreoxRepository, 6,"preox");
 //		saveDateThread6.start();
-//		SaveDateThread saveDateThread7 = new SaveDateThread(mongoTemperRepository, 7);
+//		SaveDateThread saveDateThread7 = new SaveDateThread(mongoTemperRepository, 7,"temper");
 //		saveDateThread7.start();
-//		SaveDateThread saveDateThread8 = new SaveDateThread(mongoTunnelRepository, 8);
+//		SaveDateThread saveDateThread8 = new SaveDateThread(mongoTunnelRepository, 8,"tunnel");
 //		saveDateThread8.start();
-//		SaveDateThread saveDateThread9 = new SaveDateThread(mongoWashRepository, 9);
+//		SaveDateThread saveDateThread9 = new SaveDateThread(mongoWashRepository, 9,"wash");
 //		saveDateThread9.start();
-//		SaveDateThread saveDateThread10 = new SaveDateThread(mongoProductionProcRepository, 10);
+//		SaveDateThread saveDateThread10 = new SaveDateThread(mongoProductionProcRepository, 10,"proc");
 //		saveDateThread10.start();
-//
+//		
 //		Thread.sleep(3000000);
 //	}
 //

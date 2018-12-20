@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ge.digital.gearbox.common.autoIncrKey.BizAutoIncrKey;
 import com.ge.digital.gearbox.common.autoIncrKey.BizAutoIncrService;
+import com.ge.digital.gearbox.common.redis.RedisCommonService;
 import com.ge.digital.schedule.entity.Line;
 import com.ge.digital.schedule.entity.LineBuffer;
 import com.ge.digital.schedule.entity.LineProcessTime;
@@ -33,6 +34,7 @@ import com.ge.digital.schedule.excel.entity.ScheduleOrderExcelSupport;
 import com.ge.digital.schedule.excel.entity.WorkstationNumExcelSupport;
 import com.ge.digital.schedule.excelutil.ExcelHelper;
 import com.ge.digital.schedule.excelutil.ExcelUploadSupport;
+import com.ge.digital.schedule.excelutil.MasterDataType;
 import com.ge.digital.schedule.mapper.LineBufferRepository;
 import com.ge.digital.schedule.mapper.LineProcessTimeRepository;
 import com.ge.digital.schedule.mapper.LineRepository;
@@ -47,6 +49,8 @@ import com.ge.digital.schedule.validator.MdValidatorFactory;
 public class UploadingService {
 	Map<Long, List<? extends ModelBase>> allMap = new HashMap<>();
 	Map<Long, List<? extends ExcelUploadSupport>> allMapc = new HashMap<>();
+	@Autowired
+	private RedisCommonService redisCommonService;
 	@Autowired
 	JPARepositoryFactory JPARepositoryFactory;
 	@Autowired
@@ -84,7 +88,7 @@ public class UploadingService {
 		}
 		return lineExcelSupports;
 	}
-
+	
 	@Transactional
 	public List<? extends ExcelUploadSupport> excel2Object(MultipartFile ofile,
 			Class<? extends ExcelUploadSupport> clazz) throws IOException {
@@ -93,7 +97,7 @@ public class UploadingService {
 		List<? extends ExcelUploadSupport> objects = new ExcelHelper().readExcel2Obj(file, clazz, 1, 0, false);
 		objects = mdValidatorFactory.getValidator(clazz).validateUpload(objects);
 		Long batch_upload_id = new Long(bizAutoIncrService.nextSerial(BizAutoIncrKey.BATCH_UPDATE_ID.getValue()));
-		allMapc.put(batch_upload_id, objects);
+		redisCommonService.setUploadCache(batch_upload_id, objects);
 		if (!objects.isEmpty()) {
 			objects.get(0).setBatchUploadID(batch_upload_id);
 		}
@@ -110,7 +114,7 @@ public class UploadingService {
 		List<? extends ExcelUploadSupport> objects = new ExcelHelper().readExcel2Obj(file, clazz, 1, 0, false);
 		objects = mdValidatorFactory.getValidator(clazz).validateUploadDelete(objects);
 		Long batch_upload_id = new Long(bizAutoIncrService.nextSerial(BizAutoIncrKey.BATCH_UPDATE_ID.getValue()));
-		allMapc.put(batch_upload_id, objects);
+		redisCommonService.setUploadCache(batch_upload_id, objects);
 		if (!objects.isEmpty()) {
 			objects.get(0).setBatchUploadID(batch_upload_id);
 		}
@@ -145,9 +149,59 @@ public class UploadingService {
 		allMapc.remove(batchUploadId);
 	}
 
+	/**
+	 * @param batchUploadId
+	 * @param isDelete
+	 */
+	@Transactional
+	public void saveObject(Long batchUploadId, boolean isDelete, String type) {
+		List<? extends ExcelUploadSupport> objects = (List<ExcelUploadSupport>) redisCommonService.getUploadCache(batchUploadId);
+		for (ExcelUploadSupport object : objects) {
+			// convertObject(object,type);
+			ModelBase target = convertObject(type, object);
+			if (!StringUtils.isEmpty(object.getId())) {
+				if (!isDelete) {
+					updateObject(type, target);
+				} else {
+					JPARepositoryFactory.getRepository(type).delete(target.getId());
+				}
+			} else {
+				updateObject(type, target);
+			}
+		}
+		redisCommonService.clearCacheUpload(batchUploadId);
+	}
+	@Transactional
+	private void updateObject(String type, ModelBase target) {
+		JPARepositoryFactory.getRepository(type).save(target);
+	}
+	private ModelBase convertObject(String type, ExcelUploadSupport object) {
+
+		ModelBase target = null;
+
+
+
+		if(type.equals(MasterDataType.Mdline.getValue()))
+		{
+			 target=new Line();
+		}else if(type.equals(MasterDataType.ProcessLineInfo.getValue()))
+		{
+			 target=new ProcessLineInfo();
+		}else if(type.equals(MasterDataType.LineProcessTime.getValue()))
+		{
+			 target=new LineProcessTime();
+		}else if(type.equals(MasterDataType.WorkstationStatus.getValue()))
+		{
+			 target=new WorkstationsNum();
+		}
+		
+		BeanUtils.copyProperties(object, target);
+
+		return target;
+	}
 	@Transactional
 	public void saveProcessLineInfo(Long batchUploadId, boolean isDelete) {
-		List<ProcessLineInfoExcelSupport> lineInfos = (List<ProcessLineInfoExcelSupport>) allMapc.get(batchUploadId);
+		List<ProcessLineInfoExcelSupport> lineInfos = (List<ProcessLineInfoExcelSupport>)  redisCommonService.getUploadCache(batchUploadId);
 		for (ProcessLineInfoExcelSupport lineInfo : lineInfos) {
 			ProcessLineInfo target = new ProcessLineInfo();
 			BeanUtils.copyProperties(lineInfo, target);
@@ -166,7 +220,8 @@ public class UploadingService {
 
 	@Transactional
 	public void saveLineBuffer(Long batchUploadId, boolean isDelete) {
-		List<LineBufferExcelSupport> lineBuffers = (List<LineBufferExcelSupport>) allMapc.get(batchUploadId);
+		
+		List<LineBufferExcelSupport> lineBuffers = (List<LineBufferExcelSupport>) redisCommonService.getUploadCache(batchUploadId);
 		for (LineBufferExcelSupport lineBuffer : lineBuffers) {
 			LineBuffer target = new LineBuffer();
 			BeanUtils.copyProperties(lineBuffer, target);
@@ -225,7 +280,6 @@ public class UploadingService {
 		for (WorkstationNumExcelSupport workstationStatus : workstationStatuss) {
 			WorkstationsNum target = new WorkstationsNum();
 			BeanUtils.copyProperties(workstationStatus, target);
-			target.setLine(workstationStatus.getLineId());
 			if (!StringUtils.isEmpty(target.getId())) {
 				if (!isDelete) {
 					workstationsNumRepository.save(target);

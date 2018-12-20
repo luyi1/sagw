@@ -25,14 +25,14 @@ public class WorkstationNumExcelSupport extends WorkstationsNum implements Excel
 	@ExcelSign(title = "OP60", checkNull = true)
 	Integer OP60;
 	@ExcelSign(title = "line")
-	String lineId;
+	String line;
 
-	public String getLineId() {
-		return lineId;
+	public String getLine() {
+		return line;
 	}
 
-	public void setLineId(String lineId) {
-		this.lineId = lineId;
+	public void setLine(String line) {
+		this.line = line;
 	}
 
 	private long batchUploadID;
@@ -73,6 +73,6 @@ public class WorkstationNumExcelSupport extends WorkstationsNum implements Excel
 
 	@Override
 	public String getCombinedKey() {
-		return getLineId();
+		return getLine();
 	}
 }

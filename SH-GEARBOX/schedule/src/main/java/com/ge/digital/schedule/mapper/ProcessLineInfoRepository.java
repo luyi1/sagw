@@ -11,8 +11,8 @@ import com.ge.digital.schedule.entity.ProcessLineInfo;
 
 @Repository
 public interface ProcessLineInfoRepository extends JpaRepository<ProcessLineInfo, Long> {
-	List<ProcessLineInfo> findByPartNumber(String partNumber);
-
+//	List<ProcessLineInfo> findByPartNumber(String partNumber);
+	List<ProcessLineInfo> findByHeatingOutCodeAndQuantityPerCharge(String heatingOutCode, Integer quantityPerCharge);
 	@Query("select count(ID) from ProcessLineInfo where (Line1>0 or line2>0 or line3>0 or line4>0 or line5>0) and PartNumber=?1")
 	Integer completeData(String partNumber);
 	

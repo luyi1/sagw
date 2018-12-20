@@ -57,7 +57,7 @@ public class ProcessLineInfoService {
 		List<ProcessLineInfo> processLineInfos = processLineInfoRepository.findAll();
 		Map<String, ProcessLineInfo> map = new HashMap<>();
 		for (ProcessLineInfo processLineInfo : processLineInfos) {
-			map.put(processLineInfo.getPartNumber(), processLineInfo);
+			map.put(processLineInfo.getHeatingOutCode()+":"+processLineInfo.getQuantityPerCharge(), processLineInfo);
 		}
 		redisService.setMasterDataProcessLineInfoTime(map);
 	}

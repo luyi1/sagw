@@ -3,11 +3,16 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://10.1.5.193:8761/eureka/
+      defaultZone: @eureka_ip1@,@eureka_ip2@
     fetchRegistry: true
   instance:
     prefer-ip-address: true
 spring:
+  mail:
+    host: smtp.sina.com
+    port: 25
+    username: jesse_ji521@sina.com
+    password: jesse.ji237
   datasource:
     url: jdbc:sqlserver://10.1.5.190:1433;DatabaseName=soadb
     username: sa
@@ -29,9 +34,9 @@ spring:
         default_schema: PR_Integration
   redis:
     database: 1
-    host: localhost
+    host: 10.1.5.193
     port: 6379
-    password: 123456
+    password: 
     pool:
       max-active: -1
       max-wait: -1
@@ -39,7 +44,7 @@ spring:
       min-idle: -1
       timeout: 0
   application:
-    name: wip
+    name: integration
   rabbitmq:
     host: 10.1.5.193
     port: 5672
@@ -49,7 +54,7 @@ spring:
     virtual-host: /
   data:
     mongodb:
-      uri: mongodb://10.1.5.193:27017/test
+      uri: @mongo_url@
 custom:
   archive:
     beannames: C2H2,Ccf,Ctg,ExCar,InCar,Preox,Temper,Tunnel,Wash

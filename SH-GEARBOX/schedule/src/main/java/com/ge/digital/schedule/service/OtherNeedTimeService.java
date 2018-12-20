@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.ge.digital.schedule.entity.OtherNeedTime;
@@ -22,14 +23,15 @@ public class OtherNeedTimeService {
 
 	@Autowired
 	RedisService redisService;
-
+	
+	@Cacheable(cacheNames = "otherTime",key="#partNumber")
 	public Long findBeforeOtherTimeByPartNumber(String partNumber) {
 		OtherNeedTime otherNeedTime = otherNeedTimeRepository.findByPartNumber(partNumber);
 		if (null == otherNeedTime) {
 			log.error("partNumber:{},OtherNeedTime is null", partNumber);
 			return 0L;
 		}
-		return otherNeedTime.getShotPeeningTime() + otherNeedTime.getInspectionTime();
+		return otherNeedTime.getShotPeeningTime()*1000 + otherNeedTime.getInspectionTime()*1000;
 	}
 
 	public Map<String, Long> findBeforeOtherTimeToMap() {
@@ -37,7 +39,7 @@ public class OtherNeedTimeService {
 		List<OtherNeedTime> list = otherNeedTimeRepository.findAll();
 		for (OtherNeedTime otherNeedTime : list) {
 			result.put(otherNeedTime.getPartNumber(),
-					otherNeedTime.getInspectionTime() + otherNeedTime.getShotPeeningTime());
+					otherNeedTime.getInspectionTime()*1000 + otherNeedTime.getShotPeeningTime()*1000);
 		}
 		return result;
 	}
