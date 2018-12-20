@@ -1,19 +1,6 @@
 server:
    port: 8080
 spring:
-    datasource:
-      url: jdbc:postgresql://10.0.75.1:5432/thymelte?useUnicode=true&amp;characterEncoding=UTF-8
-      username: postgres
-      password: spo2
-      druid:
-        max-active: 20
-        initial-size: 1
-        max-wait: 60000
-        min-idle: 3
-        remove-abandoned: true
-        remove-abandoned-timeout: 180
-        connection-properties: clientEncoding=UTF-8
-        test-while-idle: false
     jpa:
       generate-ddl: true
       database-platform: org.hibernate.dialect.PostgreSQL94Dialect
